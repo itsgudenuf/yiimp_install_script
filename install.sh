@@ -69,7 +69,7 @@
     echo
     #read -e -p "Enter time zone (e.g. America/New_York) : " TIME
     read -e -p "Domain Name (no http:// or www. just : example.com or 185.22.24.26) : " server_name
-    read -e -p "Enter subdomain from stratum connections miners (europe.example.com?) [y/N] : " sub_domain
+    read -e -p "Enter subdomain for stratum connections on miners (usa.example.com?) [y/N] : " sub_domain
     read -e -p "Enter support email (e.g. admin@example.com) : " EMAIL
     read -e -p "Set Pool to AutoExchange? i.e. mine any coin with BTC address? [y/N] : " BTC
     read -e -p "Please enter a new location for /site/adminRights this is to customize the Admin Panel entrance url (e.g. myAdminpanel) : " admin_panel
@@ -79,6 +79,21 @@
     read -e -p "Install UFW and configure ports? [y/N] : " UFW
     read -e -p "Install LetsEncrypt SSL? IMPORTANT! You MUST have your domain name pointed to this server prior to running the script!! [y/N]: " ssl_install
     
+    echo -e "\n\n\n\n"
+    echo -e "$RED You entered the following. If it's wrong CTRL-C now to start over $COL_RESET"
+    echo "Domain Name:         $server_name"
+    echo "Stratum Subdomain:   $sub_domain"
+    echo "Support Email:       $EMAIL"
+    echo "AutoExchange:        $BTC"
+    echo "Panel Url:           $admin_panel"
+    echo "IP Range for Admin:  $Public"
+    echo "Yiimb Github choice: $yiimpver"
+    echo "Install Fail2ban:    $install_fail2ban"
+    echo "Install UFW:         $UFW"
+    echo "Install SSL now:     $ssl_install"
+
+    read -e -p "Press ENTER to continue or CTRL-C to exit and start over" dummy
+    echo -e "\n\n\n\n"
 
     # Update package and Upgrade Ubuntu
     echo
@@ -973,39 +988,72 @@
         	# fix for the .gz file that is really a rar file
         	apt_install unrar
        		unrar e 2021-06-21-yaamp.sql.gz
+            echo -e "\t\t importing.... 2021-06-21-yaamp.sql"
         	cat 2021-06-21-yaamp.sql | sudo mysql yiimpfrontend
 
 
 		# Oh the humanity!
+        echo -e "\t\t importing.... 2015-07-01-accounts_hostaddr.sql"
 		sudo mysql yiimpfrontend --force < 2015-07-01-accounts_hostaddr.sql
+        echo -e "\t\t importing.... 2015-07-15-coins_hasmasternodes.sql"
 		sudo mysql yiimpfrontend --force < 2015-07-15-coins_hasmasternodes.sql
+        echo -e "\t\t importing.... 2015-09-20-blocks_worker.sql"
 		sudo mysql yiimpfrontend --force < 2015-09-20-blocks_worker.sql
+        echo -e "\t\t importing.... 2016-02-17-payouts_errmsg.sql"
 		sudo mysql yiimpfrontend --force < 2016-02-17-payouts_errmsg.sql
+        echo -e "\t\t importing.... 2016-02-18-accounts_donation.sql"
 		sudo mysql yiimpfrontend --force < 2016-02-18-accounts_donation.sql
+        echo -e "\t\t importing.... 2016-02-23-shares_diff.sql"
 		sudo mysql yiimpfrontend --force < 2016-02-23-shares_diff.sql
+        echo -e "\t\t importing.... 2016-03-26-markets.sql"
 		sudo mysql yiimpfrontend --force < 2016-03-26-markets.sql
+        echo -e "\t\t importing.... 2016-03-30-coins.sql"
 		sudo mysql yiimpfrontend --force < 2016-03-30-coins.sql
+        echo -e "\t\t importing.... 2016-04-03-accounts.sql"
 		sudo mysql yiimpfrontend --force < 2016-04-03-accounts.sql
+        echo -e "\t\t importing.... 2016-04-24-market_history.sql"
 		sudo mysql yiimpfrontend --force < 2016-04-24-market_history.sql
+        echo -e "\t\t importing.... 2016-04-27-settings.sql"
 		sudo mysql yiimpfrontend --force < 2016-04-27-settings.sql
+        echo -e "\t\t importing.... 2016-05-11-coins.sql"
 		sudo mysql yiimpfrontend --force < 2016-05-11-coins.sql
+        echo -e "\t\t importing.... 2016-05-15-benchmarks.sql"
 		sudo mysql yiimpfrontend --force < 2016-05-15-benchmarks.sql
+        echo -e "\t\t importing.... 2016-05-23-bookmarks.sql"
 		sudo mysql yiimpfrontend --force < 2016-05-23-bookmarks.sql
+        echo -e "\t\t importing.... 2016-06-01-notifications.sql"
 		sudo mysql yiimpfrontend --force < 2016-06-01-notifications.sql
+        echo -e "\t\t importing.... 2016-06-04-bench_chips.sql"
 		sudo mysql yiimpfrontend --force < 2016-06-04-bench_chips.sql
+        echo -e "\t\t importing.... 2016-11-23-coins.sql"
 		sudo mysql yiimpfrontend --force < 2016-11-23-coins.sql
+        echo -e "\t\t importing.... 2017-02-05-benchmarks.sql"
 		sudo mysql yiimpfrontend --force < 2017-02-05-benchmarks.sql
+        echo -e "\t\t importing.... 2017-03-31-earnings_index.sql"
 		sudo mysql yiimpfrontend --force < 2017-03-31-earnings_index.sql
+        echo -e "\t\t importing.... 2017-05-accounts_case_swaptime.sql"
 		sudo mysql yiimpfrontend --force < 2017-05-accounts_case_swaptime.sql
+        echo -e "\t\t importing.... 2017-06-payouts_coinid_memo.sql"
 		sudo mysql yiimpfrontend --force < 2017-06-payouts_coinid_memo.sql
+        echo -e "\t\t importing.... 2017-09-notifications.sql"
 		sudo mysql yiimpfrontend --force < 2017-09-notifications.sql
+        echo -e "\t\t importing.... 2017-10-bookmarks.sql"
 		sudo mysql yiimpfrontend --force < 2017-10-bookmarks.sql
+        echo -e "\t\t importing.... 2017-11-segwit.sql"
 		sudo mysql yiimpfrontend --force < 2017-11-segwit.sql
+        echo -e "\t\t importing.... 2018-01-stratums_ports.sql"
 		sudo mysql yiimpfrontend --force < 2018-01-stratums_ports.sql
+        echo -e "\t\t importing.... 2018-02-coins_getinfo.sql"
 		sudo mysql yiimpfrontend --force < 2018-02-coins_getinfo.sql
+        echo -e "\t\t importing.... 2018-09-22-workers.sql"
 		sudo mysql yiimpfrontend --force < 2018-09-22-workers.sql
+        echo -e "\t\t importing.... 2019-03-coins_thepool_life.sql"
 		sudo mysql yiimpfrontend --force < 2019-03-coins_thepool_life.sql
+        echo -e "\t\t importing.... 2020-06-03-blocks.sql"
 		sudo mysql yiimpfrontend --force < 2020-06-03-blocks.sql
+
+
+
     elif [[ "$yiimpver" == "2" ]]; then
 		# Tpruvot Sql
 
