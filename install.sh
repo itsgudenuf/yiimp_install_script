@@ -6,7 +6,7 @@
 # Current Author: itsgudenuf
 #
 # Program:
-#   Install yiimp on Ubuntu 16.04/18.04 running Nginx, MariaDB, and php7.3
+#   Install yiimp on Ubuntu 18.04 running Nginx, MariaDB, and php7.3
 #   v0.1
 # 
 ################################################################################
@@ -142,6 +142,13 @@
     echo
     echo -e "$CYAN => Installing Mariadb Server : $COL_RESET"
     echo
+    
+    echo -e " Installing MariaDB Repository...$COL_RESET"
+    hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+    sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu bionic main' >/dev/null 2>&1
+    hide_output sudo apt update
+    hide_output sudo apt -y upgrade
+   
     sleep 3
         
     # Create random password
@@ -250,7 +257,6 @@
 
         sudo rm -f /tmp/email.message
         echo "Mail sent"
-    fi
     fi
     echo -e "$GREEN Done...$COL_RESET"
     
