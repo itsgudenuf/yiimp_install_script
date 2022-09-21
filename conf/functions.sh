@@ -3,6 +3,7 @@
 # Source https://mailinabox.email/ https://github.com/mail-in-a-box/mailinabox
 # Updated by cryptopool.builders for crypto use...
 # Modified by Vaudois
+# Modified by itsgudenuf
 #####################################################
 
 VERSION=0.1
@@ -182,8 +183,8 @@ function term_art {
 
 function install_end_message
 {
-	clear
-	echo
+	# clear
+	echo -e "\n\n\n\n\n\n\n\n\n\n\n\n"
 	figlet -f slant -w 100 "Complete!"
 	
 	echo -e "$CYAN  --------------------------------------------------------------------------- 	  		$COL_RESET"
