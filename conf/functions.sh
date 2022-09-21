@@ -194,7 +194,7 @@ function install_end_message
 	echo -e "$YELLOW   Your mysql information (login/Password) is saved in:$RED ~/.my.cnf					$COL_RESET"
 	echo -e "$CYAN  ---------------------------------------------------------------------------	  	  		$COL_RESET"
 	echo -e "$YELLOW   Your pool  at :$CYAN http://"$server_name" 									  		$COL_RESET"
-	echo -e "$YELLOW   Admin area at :$CYAN http://"$server_name"/site/AdminPanel					  		$COL_RESET"
+	echo -e "$YELLOW   Admin area at :$CYAN http://"$server_name"/site/"$admin_panel"					  		$COL_RESET"
 	echo -e "$YELLOW   phpMyAdmin at :$CYAN http://"$server_name"/phpmyadmin 						  		$COL_RESET"
 	echo -e "$CYAN  --------------------------------------------------------------------------- 	  		$COL_RESET"
 	echo -e "$YELLOW   If you want change$RED $admin_panel $YELLOW edit SiteController.php:			  		$COL_RESET"
