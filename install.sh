@@ -239,27 +239,29 @@
     
     
     # Test Email
-    echo
-    echo
-    echo -e "$CYAN => Testing to see if server emails are sent $COL_RESET"
-    echo
-    sleep 3
+    #  todo = root_email and send_email are not set anywhere
+    # echo
+    # echo
+    # echo -e "$CYAN => Testing to see if server emails are sent $COL_RESET"
+    # echo
+    # sleep 3
     
-    if [[ "$root_email" != "" ]]; then
-        echo $root_email > sudo tee --append ~/.email
-        echo $root_email > sudo tee --append ~/.forward
+    # if [[ "$root_email" != "" ]]; then
+    #     echo $root_email > sudo tee --append ~/.email
+    #     echo $root_email > sudo tee --append ~/.forward
 
-    if [[ ("$send_email" == "y" || "$send_email" == "Y" || "$send_email" == "") ]]; then
-        echo "This is a mail test for the SMTP Service." > sudo tee --append /tmp/email.message
-        echo "You should receive this !" >> sudo tee --append /tmp/email.message
-        echo "" >> sudo tee --append /tmp/email.message
-        echo "Cheers" >> sudo tee --append /tmp/email.message
-        sudo sendmail -s "SMTP Testing" $root_email < sudo tee --append /tmp/email.message
+    #     if [[ ("$send_email" == "y" || "$send_email" == "Y" || "$send_email" == "") ]]; then
+    #         echo "This is a mail test for the SMTP Service." > sudo tee --append /tmp/email.message
+    #         echo "You should receive this !" >> sudo tee --append /tmp/email.message
+    #         echo "" >> sudo tee --append /tmp/email.message
+    #         echo "Cheers" >> sudo tee --append /tmp/email.message
+    #         sudo sendmail -s "SMTP Testing" $root_email < sudo tee --append /tmp/email.message
 
-        sudo rm -f /tmp/email.message
-        echo "Mail sent"
-    fi
-    echo -e "$GREEN Done...$COL_RESET"
+    #         sudo rm -f /tmp/email.message
+    #         echo "Mail sent"
+    #     fi
+    # fi
+    # echo -e "$GREEN Done...$COL_RESET"
     
     # Installing Fail2Ban & UFW
     echo
