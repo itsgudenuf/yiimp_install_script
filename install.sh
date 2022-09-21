@@ -958,7 +958,12 @@
 		# Kudaraidee Sql
 
 		# Import sql dump
-		sudo zcat 2021-06-21-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
+		# sudo zcat 2021-06-21-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
+        	# fix for the .gz file that is really a rar file
+        	apt_install unrar
+       		unrar e 2021-06-21-yaamp.sql.gz
+        	cat sudo mysql --defaults-group-suffix=host1
+
 
 		# Oh the humanity!
 		sudo mysql --defaults-group-suffix=host1 --force < 2015-07-01-accounts_hostaddr.sql
