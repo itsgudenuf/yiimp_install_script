@@ -12,7 +12,7 @@
 ################################################################################
 	
 	### Variable ###
-    	githubyiimptpruvot=https://github.com/tpruvot/yiimp.git
+    githubyiimptpruvot=https://github.com/tpruvot/yiimp.git
 	githubrepoKudaraidee=https://github.com/Kudaraidee/yiimp.git
 	githubrepoAfinielTech=https://github.com/Afiniel-tech/yiimp.git
 	githubrepoAfiniel=https://github.com/afiniel/yiimp
@@ -52,19 +52,7 @@
     clear	
 	term_art
 
-    # Update package and Upgrade Ubuntu
-    echo
-    echo
-    echo -e "$CYAN => Updating system and installing required packages :$COL_RESET"
-    echo 
-    sleep 3
-        
-    hide_output sudo apt -y update 
-    hide_output sudo apt -y upgrade
-    hide_output sudo apt -y autoremove
-    apt_install dialog python3 python3-pip acl nano apt-transport-https
-    apt_install figlet
-    echo -e "$GREEN Done...$COL_RESET"
+
 
     source conf/prerequisite.sh
     sleep 3
@@ -91,6 +79,24 @@
     read -e -p "Install UFW and configure ports? [Y/n] : " UFW
     read -e -p "Install LetsEncrypt SSL? IMPORTANT! You MUST have your domain name pointed to this server prior to running the script!! [Y/n]: " ssl_install
     
+
+    # Update package and Upgrade Ubuntu
+    echo
+    echo
+    echo -e "$CYAN => Updating system and installing required packages :$COL_RESET"
+    echo 
+    sleep 3
+        
+    hide_output sudo apt -y update 
+
+    
+
+
+    hide_output sudo apt -y upgrade
+    hide_output sudo apt -y autoremove
+    apt_install dialog python3 python3-pip acl nano apt-transport-https
+    apt_install figlet
+    echo -e "$GREEN Done...$COL_RESET"
     
     # Switch Aptitude
     echo
@@ -143,7 +149,7 @@
     echo -e "$CYAN => Installing Mariadb Server : $COL_RESET"
     echo
     
-    echo -e " Installing MariaDB Repository...$COL_RESET"
+    echo -e "...Installing MariaDB Repository...$COL_RESET"
     hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
     sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu bionic main' >/dev/null 2>&1
     hide_output sudo apt update
@@ -175,18 +181,13 @@
     fi
 		hide_output sudo apt -y update
 
-    if [[ ("$DISTRO" == "16") ]]; then
-    apt_install php7.3-fpm php7.3-opcache php7.3 php7.3-common php7.3-gd php7.3-mysql php7.3-imap php7.3-cli \
-    php7.3-cgi php-pear php-auth imagemagick libruby php7.3-curl php7.3-intl php7.3-pspell mcrypt\
-    php7.3-recode php7.3-sqlite3 php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php-memcache php-imagick php-gettext php7.3-zip php7.3-mbstring php7.3-memcache
-    else
     apt_install php7.3-fpm php7.3-opcache php7.3 php7.3-common php7.3-gd php7.3-mysql php7.3-imap php7.3-cli \
     php7.3-cgi php-pear imagemagick libruby php7.3-curl php7.3-intl php7.3-pspell mcrypt\
     php7.3-recode php7.3-sqlite3 php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php-memcache php-imagick php-gettext php7.3-zip php7.3-mbstring \
-    libpsl-dev libnghttp2-dev php7.3-memcache
-    fi
+    libpsl-dev libnghttp2-dev php7.3-memcache certbot python3-certbot-dns-cloudflare
+
     sleep 5
-		hide_output sudo systemctl start php7.3-fpm
+	hide_output sudo systemctl start php7.3-fpm
     sudo systemctl status php7.3-fpm | sed -n "1,3p"
     echo
     echo -e "$GREEN Done...$COL_RESET"
@@ -522,6 +523,7 @@
     echo -e "$GREEN Done...$COL_RESET"
     	
     if [[ ("$ssl_install" == "y" || "$ssl_install" == "Y" || "$ssl_install" == "") ]]; then
+
 
     
     # Install SSL (with SubDomain)
