@@ -202,6 +202,10 @@
     libpsl-dev libnghttp2-dev php7.3-memcache certbot python3-certbot-dns-cloudflare
 
     sleep 5
+
+    # Set default php to 7.3
+    update-alternatives --set php /usr/bin/php7.3
+
 	hide_output sudo systemctl start php7.3-fpm
     sudo systemctl status php7.3-fpm | sed -n "1,3p"
     echo
