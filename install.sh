@@ -959,152 +959,152 @@
 		# Kudaraidee Sql
 
 		# Import sql dump
-		# sudo zcat 2021-06-21-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
+		# sudo zcat 2021-06-21-yaamp.sql.gz | sudo mysql 
         	# fix for the .gz file that is really a rar file
         	apt_install unrar
        		unrar e 2021-06-21-yaamp.sql.gz
-        	cat sudo mysql --defaults-group-suffix=host1
+        	cat 2021-06-21-yaamp.sql | sudo mysql 
 
 
 		# Oh the humanity!
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-07-01-accounts_hostaddr.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-07-15-coins_hasmasternodes.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-09-20-blocks_worker.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-17-payouts_errmsg.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-18-accounts_donation.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-23-shares_diff.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-03-26-markets.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-03-30-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-03-accounts.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-24-market_history.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-27-settings.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-11-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-15-benchmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-23-bookmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-06-01-notifications.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-06-04-bench_chips.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-11-23-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-02-05-benchmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-03-31-earnings_index.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-05-accounts_case_swaptime.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-06-payouts_coinid_memo.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-09-notifications.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-10-bookmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-11-segwit.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-01-stratums_ports.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-02-coins_getinfo.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-09-22-workers.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2019-03-coins_thepool_life.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2020-06-03-blocks.sql
+		sudo mysql  --force < 2015-07-01-accounts_hostaddr.sql
+		sudo mysql  --force < 2015-07-15-coins_hasmasternodes.sql
+		sudo mysql  --force < 2015-09-20-blocks_worker.sql
+		sudo mysql  --force < 2016-02-17-payouts_errmsg.sql
+		sudo mysql  --force < 2016-02-18-accounts_donation.sql
+		sudo mysql  --force < 2016-02-23-shares_diff.sql
+		sudo mysql  --force < 2016-03-26-markets.sql
+		sudo mysql  --force < 2016-03-30-coins.sql
+		sudo mysql  --force < 2016-04-03-accounts.sql
+		sudo mysql  --force < 2016-04-24-market_history.sql
+		sudo mysql  --force < 2016-04-27-settings.sql
+		sudo mysql  --force < 2016-05-11-coins.sql
+		sudo mysql  --force < 2016-05-15-benchmarks.sql
+		sudo mysql  --force < 2016-05-23-bookmarks.sql
+		sudo mysql  --force < 2016-06-01-notifications.sql
+		sudo mysql  --force < 2016-06-04-bench_chips.sql
+		sudo mysql  --force < 2016-11-23-coins.sql
+		sudo mysql  --force < 2017-02-05-benchmarks.sql
+		sudo mysql  --force < 2017-03-31-earnings_index.sql
+		sudo mysql  --force < 2017-05-accounts_case_swaptime.sql
+		sudo mysql  --force < 2017-06-payouts_coinid_memo.sql
+		sudo mysql  --force < 2017-09-notifications.sql
+		sudo mysql  --force < 2017-10-bookmarks.sql
+		sudo mysql  --force < 2017-11-segwit.sql
+		sudo mysql  --force < 2018-01-stratums_ports.sql
+		sudo mysql  --force < 2018-02-coins_getinfo.sql
+		sudo mysql  --force < 2018-09-22-workers.sql
+		sudo mysql  --force < 2019-03-coins_thepool_life.sql
+		sudo mysql  --force < 2020-06-03-blocks.sql
     elif [[ "$yiimpver" == "2" ]]; then
 		# Tpruvot Sql
 
 		# Import sql dump
-		sudo zcat 2016-04-03-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
+		sudo zcat 2016-04-03-yaamp.sql.gz | sudo mysql 
 
 		# Oh the humanity!
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-07-01-accounts_hostaddr.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-07-15-coins_hasmasternodes.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-09-20-blocks_worker.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-17-payouts_errmsg.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-18-accounts_donation.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-23-shares_diff.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-03-26-markets.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-03-30-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-03-accounts.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-24-market_history.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-27-settings.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-11-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-15-benchmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-23-bookmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-06-01-notifications.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-06-04-bench_chips.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-11-23-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-02-05-benchmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-03-31-earnings_index.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-05-accounts_case_swaptime.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-06-payouts_coinid_memo.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-09-notifications.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-10-bookmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-11-segwit.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-01-stratums_ports.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-02-coins_getinfo.sql
+		sudo mysql  --force < 2015-07-01-accounts_hostaddr.sql
+		sudo mysql  --force < 2015-07-15-coins_hasmasternodes.sql
+		sudo mysql  --force < 2015-09-20-blocks_worker.sql
+		sudo mysql  --force < 2016-02-17-payouts_errmsg.sql
+		sudo mysql  --force < 2016-02-18-accounts_donation.sql
+		sudo mysql  --force < 2016-02-23-shares_diff.sql
+		sudo mysql  --force < 2016-03-26-markets.sql
+		sudo mysql  --force < 2016-03-30-coins.sql
+		sudo mysql  --force < 2016-04-03-accounts.sql
+		sudo mysql  --force < 2016-04-24-market_history.sql
+		sudo mysql  --force < 2016-04-27-settings.sql
+		sudo mysql  --force < 2016-05-11-coins.sql
+		sudo mysql  --force < 2016-05-15-benchmarks.sql
+		sudo mysql  --force < 2016-05-23-bookmarks.sql
+		sudo mysql  --force < 2016-06-01-notifications.sql
+		sudo mysql  --force < 2016-06-04-bench_chips.sql
+		sudo mysql  --force < 2016-11-23-coins.sql
+		sudo mysql  --force < 2017-02-05-benchmarks.sql
+		sudo mysql  --force < 2017-03-31-earnings_index.sql
+		sudo mysql  --force < 2017-05-accounts_case_swaptime.sql
+		sudo mysql  --force < 2017-06-payouts_coinid_memo.sql
+		sudo mysql  --force < 2017-09-notifications.sql
+		sudo mysql  --force < 2017-10-bookmarks.sql
+		sudo mysql  --force < 2017-11-segwit.sql
+		sudo mysql  --force < 2018-01-stratums_ports.sql
+		sudo mysql  --force < 2018-02-coins_getinfo.sql
 	elif [[ "$yiimpver" == "3" ]]; then
 		# Afiniel Tech Sql
 
 
 		# Import sql dump
-		sudo zcat 2016-04-03-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
+		sudo zcat 2016-04-03-yaamp.sql.gz | sudo mysql 
 
 		# Oh the humanity!
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-07-01-accounts_hostaddr.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-07-15-coins_hasmasternodes.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-09-20-blocks_worker.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-17-payouts_errmsg.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-18-accounts_donation.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-23-shares_diff.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-03-26-markets.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-03-30-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-03-accounts.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-24-market_history.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-27-settings.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-11-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-15-benchmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-23-bookmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-06-01-notifications.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-06-04-bench_chips.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-11-23-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-02-05-benchmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-03-31-earnings_index.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-05-accounts_case_swaptime.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-06-payouts_coinid_memo.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-09-notifications.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-10-bookmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-11-segwit.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-01-stratums_ports.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-02-coins_getinfo.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-09-22-workers.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2019-03-coins_thepool_life.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2019-11-10-yiimp.sql.gz
-		sudo mysql --defaults-group-suffix=host1 --force < 2020-06-03-blocks.sql
+		sudo mysql  --force < 2015-07-01-accounts_hostaddr.sql
+		sudo mysql  --force < 2015-07-15-coins_hasmasternodes.sql
+		sudo mysql  --force < 2015-09-20-blocks_worker.sql
+		sudo mysql  --force < 2016-02-17-payouts_errmsg.sql
+		sudo mysql  --force < 2016-02-18-accounts_donation.sql
+		sudo mysql  --force < 2016-02-23-shares_diff.sql
+		sudo mysql  --force < 2016-03-26-markets.sql
+		sudo mysql  --force < 2016-03-30-coins.sql
+		sudo mysql  --force < 2016-04-03-accounts.sql
+		sudo mysql  --force < 2016-04-24-market_history.sql
+		sudo mysql  --force < 2016-04-27-settings.sql
+		sudo mysql  --force < 2016-05-11-coins.sql
+		sudo mysql  --force < 2016-05-15-benchmarks.sql
+		sudo mysql  --force < 2016-05-23-bookmarks.sql
+		sudo mysql  --force < 2016-06-01-notifications.sql
+		sudo mysql  --force < 2016-06-04-bench_chips.sql
+		sudo mysql  --force < 2016-11-23-coins.sql
+		sudo mysql  --force < 2017-02-05-benchmarks.sql
+		sudo mysql  --force < 2017-03-31-earnings_index.sql
+		sudo mysql  --force < 2017-05-accounts_case_swaptime.sql
+		sudo mysql  --force < 2017-06-payouts_coinid_memo.sql
+		sudo mysql  --force < 2017-09-notifications.sql
+		sudo mysql  --force < 2017-10-bookmarks.sql
+		sudo mysql  --force < 2017-11-segwit.sql
+		sudo mysql  --force < 2018-01-stratums_ports.sql
+		sudo mysql  --force < 2018-02-coins_getinfo.sql
+		sudo mysql  --force < 2018-09-22-workers.sql
+		sudo mysql  --force < 2019-03-coins_thepool_life.sql
+		sudo mysql  --force < 2019-11-10-yiimp.sql.gz
+		sudo mysql  --force < 2020-06-03-blocks.sql
 	elif [[ "$yiimpver" == "4" ]]; then
 		# Afiniel
 
 		# Import sql dump
-		sudo zcat 2021-06-21-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
+		sudo zcat 2021-06-21-yaamp.sql.gz | sudo mysql 
 		
 		# Oh the humanity!
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-07-01-accounts_hostaddr.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-07-15-coins_hasmasternodes.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2015-09-20-blocks_worker.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-17-payouts_errmsg.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-18-accounts_donation.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-02-23-shares_diff.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-03-26-markets.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-03-30-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-03-accounts.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-24-market_history.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-04-27-settings.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-11-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-15-benchmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-05-23-bookmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-06-01-notifications.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-06-04-bench_chips.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2016-11-23-coins.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-02-05-benchmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-03-31-earnings_index.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-05-accounts_case_swaptime.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-06-payouts_coinid_memo.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-09-notifications.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-10-bookmarks.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2017-11-segwit.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-01-stratums_ports.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-02-coins_getinfo.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2018-09-22-workers.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2019-03-coins_thepool_life.sql
-		sudo mysql --defaults-group-suffix=host1 --force < 2020-06-03-blocks.sql
-		#sudo mysql --defaults-group-suffix=host1 --force < 2020-11-10-yaamp.sql.gz
-		#sudo mysql --defaults-group-suffix=host1 --force < 2021-06-21-yaamp.sql.gz
+		sudo mysql  --force < 2015-07-01-accounts_hostaddr.sql
+		sudo mysql  --force < 2015-07-15-coins_hasmasternodes.sql
+		sudo mysql  --force < 2015-09-20-blocks_worker.sql
+		sudo mysql  --force < 2016-02-17-payouts_errmsg.sql
+		sudo mysql  --force < 2016-02-18-accounts_donation.sql
+		sudo mysql  --force < 2016-02-23-shares_diff.sql
+		sudo mysql  --force < 2016-03-26-markets.sql
+		sudo mysql  --force < 2016-03-30-coins.sql
+		sudo mysql  --force < 2016-04-03-accounts.sql
+		sudo mysql  --force < 2016-04-24-market_history.sql
+		sudo mysql  --force < 2016-04-27-settings.sql
+		sudo mysql  --force < 2016-05-11-coins.sql
+		sudo mysql  --force < 2016-05-15-benchmarks.sql
+		sudo mysql  --force < 2016-05-23-bookmarks.sql
+		sudo mysql  --force < 2016-06-01-notifications.sql
+		sudo mysql  --force < 2016-06-04-bench_chips.sql
+		sudo mysql  --force < 2016-11-23-coins.sql
+		sudo mysql  --force < 2017-02-05-benchmarks.sql
+		sudo mysql  --force < 2017-03-31-earnings_index.sql
+		sudo mysql  --force < 2017-05-accounts_case_swaptime.sql
+		sudo mysql  --force < 2017-06-payouts_coinid_memo.sql
+		sudo mysql  --force < 2017-09-notifications.sql
+		sudo mysql  --force < 2017-10-bookmarks.sql
+		sudo mysql  --force < 2017-11-segwit.sql
+		sudo mysql  --force < 2018-01-stratums_ports.sql
+		sudo mysql  --force < 2018-02-coins_getinfo.sql
+		sudo mysql  --force < 2018-09-22-workers.sql
+		sudo mysql  --force < 2019-03-coins_thepool_life.sql
+		sudo mysql  --force < 2020-06-03-blocks.sql
+		#sudo mysql  --force < 2020-11-10-yaamp.sql.gz
+		#sudo mysql  --force < 2021-06-21-yaamp.sql.gz
 	fi
 
     echo -e "$GREEN Done...$COL_RESET"    
