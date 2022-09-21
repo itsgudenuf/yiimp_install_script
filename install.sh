@@ -75,9 +75,9 @@
     read -e -p "Please enter a new location for /site/adminRights this is to customize the Admin Panel entrance url (e.g. myAdminpanel) : " admin_panel
     read -e -p "Enter the Public IP of the system you will use to access the admin panel (http://www.whatsmyip.org/) : " Public
     read -e -p "Enter desired Yiimp GitHub (1=Kudaraidee or 2=tpruvot or 3=Afiniel-Tech 4= Afiniel) [1 by default] : " yiimpver
-    read -e -p "Install Fail2ban? [Y/n] : " install_fail2ban
-    read -e -p "Install UFW and configure ports? [Y/n] : " UFW
-    read -e -p "Install LetsEncrypt SSL? IMPORTANT! You MUST have your domain name pointed to this server prior to running the script!! [Y/n]: " ssl_install
+    read -e -p "Install Fail2ban? [y/N] : " install_fail2ban
+    read -e -p "Install UFW and configure ports? [y/N] : " UFW
+    read -e -p "Install LetsEncrypt SSL? IMPORTANT! You MUST have your domain name pointed to this server prior to running the script!! [y/N]: " ssl_install
     
 
     # Update package and Upgrade Ubuntu
@@ -271,13 +271,13 @@
     sleep 3
     
     
-    if [[ ("$install_fail2ban" == "y" || "$install_fail2ban" == "Y" || "$install_fail2ban" == "") ]]; then
+    if [[ ("$install_fail2ban" == "y" || "$install_fail2ban" == "Y" ) ]]; then
     apt_install fail2ban
     sudo systemctl status fail2ban | sed -n "1,3p"
         fi
 
 
-    if [[ ("$UFW" == "y" || "$UFW" == "Y" || "$UFW" == "") ]]; then
+    if [[ ("$UFW" == "y" || "$UFW" == "Y") ]]; then
     apt_install ufw
 	
     hide_output sudo ufw default deny incoming
@@ -440,166 +440,40 @@
     sudo mkdir -p /var/www/$server_name/html
 
     if [[ ("$sub_domain" == "y" || "$sub_domain" == "Y") ]]; then
-    echo 'include /etc/nginx/blockuseragents.rules;
-	server {
-	if ($blockedagent) {
-                return 403;
-        }
-        if ($request_method !~ ^(GET|HEAD|POST)$) {
-        return 444;
-        }
-        listen 80;
-        listen [::]:80;
-        server_name '"${server_name}"';
-        root "/var/www/'"${server_name}"'/html/web";
-        index index.html index.htm index.php;
-        charset utf-8;
-    
-        location / {
-        try_files $uri $uri/ /index.php?$args;
-        }
-        location @rewrite {
-        rewrite ^/(.*)$ /index.php?r=$1;
-        }
-    
-        location = /favicon.ico { access_log off; log_not_found off; }
-        location = /robots.txt  { access_log off; log_not_found off; }
-    
-        access_log /var/log/nginx/'"${server_name}"'.app-access.log;
-        error_log /var/log/nginx/'"${server_name}"'.app-error.log;
-    
-        # allow larger file uploads and longer script runtimes
-		client_body_buffer_size  50k;
-        client_header_buffer_size 50k;
-        client_max_body_size 50k;
-        large_client_header_buffers 2 50k;
-        sendfile off;
-    
-        location ~ ^/index\.php$ {
-            fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
-            fastcgi_index index.php;
-            include fastcgi_params;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            fastcgi_intercept_errors off;
-            fastcgi_buffer_size 16k;
-            fastcgi_buffers 4 16k;
-            fastcgi_connect_timeout 300;
-            fastcgi_send_timeout 300;
-            fastcgi_read_timeout 300;
-	    try_files $uri $uri/ =404;
-        }
-		location ~ \.php$ {
-        	return 404;
-        }
-		location ~ \.sh {
-		return 404;
-        }
-		location ~ /\.ht {
-		deny all;
-        }
-		location ~ /.well-known {
-		allow all;
-        }
-		location /phpmyadmin {
-  		root /usr/share/;
-  		index index.php;
-  		try_files $uri $uri/ =404;
-  		location ~ ^/phpmyadmin/(doc|sql|setup)/ {
-    		deny all;
-  	  }
-  		location ~ /phpmyadmin/(.+\.php)$ {
-    		fastcgi_pass unix:/run/php/php7.3-fpm.sock;
-    		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    		include fastcgi_params;
-    		include snippets/fastcgi-php.conf;
-  	    }
-      }
-    }
-    ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
-
-    sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
-    sudo ln -s /var/web /var/www/$server_name/html
-    hide_output sudo systemctl reload php7.3-fpm.service
-    hide_output sudo systemctl restart nginx.service
-    echo -e "$GREEN Done...$COL_RESET"
-    	
-    if [[ ("$ssl_install" == "y" || "$ssl_install" == "Y" || "$ssl_install" == "") ]]; then
-
-
-    
-    # Install SSL (with SubDomain)
-    echo
-    echo -e "Install LetsEncrypt and setting SSL (with SubDomain)"
-    echo
-    
-    apt_install letsencrypt
-    sudo letsencrypt certonly -a webroot --webroot-path=/var/web --email "$EMAIL" --agree-tos -d "$server_name"
-    sudo rm /etc/nginx/sites-available/$server_name.conf
-    sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-    # I am SSL Man!
-	echo 'include /etc/nginx/blockuseragents.rules;
-	server {
-	if ($blockedagent) {
-                return 403;
-        }
-        if ($request_method !~ ^(GET|HEAD|POST)$) {
-        return 444;
-        }
-        listen 80;
-        listen [::]:80;
-        server_name '"${server_name}"';
-    	# enforce https
-        return 301 https://$server_name$request_uri;
-	}
-	
-	server {
-	if ($blockedagent) {
-                return 403;
-        }
-        if ($request_method !~ ^(GET|HEAD|POST)$) {
-        return 444;
-        }
-            listen 443 ssl http2;
-            listen [::]:443 ssl http2;
+        echo 'include /etc/nginx/blockuseragents.rules;
+        server {
+        if ($blockedagent) {
+                    return 403;
+            }
+            if ($request_method !~ ^(GET|HEAD|POST)$) {
+            return 444;
+            }
+            listen 80;
+            listen [::]:80;
             server_name '"${server_name}"';
+            root "/var/www/'"${server_name}"'/html/web";
+            index index.html index.htm index.php;
+            charset utf-8;
         
-            root /var/www/'"${server_name}"'/html/web;
-            index index.php;
+            location / {
+            try_files $uri $uri/ /index.php?$args;
+            }
+            location @rewrite {
+            rewrite ^/(.*)$ /index.php?r=$1;
+            }
+        
+            location = /favicon.ico { access_log off; log_not_found off; }
+            location = /robots.txt  { access_log off; log_not_found off; }
         
             access_log /var/log/nginx/'"${server_name}"'.app-access.log;
-            error_log  /var/log/nginx/'"${server_name}"'.app-error.log;
+            error_log /var/log/nginx/'"${server_name}"'.app-error.log;
         
             # allow larger file uploads and longer script runtimes
- 	client_body_buffer_size  50k;
-        client_header_buffer_size 50k;
-        client_max_body_size 50k;
-        large_client_header_buffers 2 50k;
-        sendfile off;
-        
-            # strengthen ssl security
-            ssl_certificate /etc/letsencrypt/live/'"${server_name}"'/fullchain.pem;
-            ssl_certificate_key /etc/letsencrypt/live/'"${server_name}"'/privkey.pem;
-            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-            ssl_prefer_server_ciphers on;
-            ssl_session_cache shared:SSL:10m;
-            ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:ECDHE-RSA-AES128-GCM-SHA256:AES256+EECDH:DHE-RSA-AES128-GCM-SHA256:AES256+EDH:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
-            ssl_dhparam /etc/ssl/certs/dhparam.pem;
-        
-            # Add headers to serve security related headers
-            add_header Strict-Transport-Security "max-age=15768000; preload;";
-            add_header X-Content-Type-Options nosniff;
-            add_header X-XSS-Protection "1; mode=block";
-            add_header X-Robots-Tag none;
-            add_header Content-Security-Policy "frame-ancestors 'self'";
-        
-        location / {
-        try_files $uri $uri/ /index.php?$args;
-        }
-        location @rewrite {
-        rewrite ^/(.*)$ /index.php?r=$1;
-        }
-    
+            client_body_buffer_size  50k;
+            client_header_buffer_size 50k;
+            client_max_body_size 50k;
+            large_client_header_buffers 2 50k;
+            sendfile off;
         
             location ~ ^/index\.php$ {
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
@@ -613,204 +487,204 @@
                 fastcgi_connect_timeout 300;
                 fastcgi_send_timeout 300;
                 fastcgi_read_timeout 300;
-                include /etc/nginx/fastcgi_params;
-	    	try_files $uri $uri/ =404;
-        }
-		location ~ \.php$ {
-        	return 404;
-        }
-		location ~ \.sh {
-		return 404;
-        }
-        
-            location ~ /\.ht {
-                deny all;
+            try_files $uri $uri/ =404;
             }
-	    location /phpmyadmin {
-  		root /usr/share/;
-  		index index.php;
-  		try_files $uri $uri/ =404;
-  		location ~ ^/phpmyadmin/(doc|sql|setup)/ {
-    		deny all;
-  	}
-  		location ~ /phpmyadmin/(.+\.php)$ {
-    		fastcgi_pass unix:/run/php/php7.3-fpm.sock;
-    		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    		include fastcgi_params;
-    		include snippets/fastcgi-php.conf;
-  	   }
-     }
-    }
+            location ~ \.php$ {
+                return 404;
+            }
+            location ~ \.sh {
+            return 404;
+            }
+            location ~ /\.ht {
+            deny all;
+            }
+            location ~ /.well-known {
+            allow all;
+            }
+            location /phpmyadmin {
+            root /usr/share/;
+            index index.php;
+            try_files $uri $uri/ =404;
+            location ~ ^/phpmyadmin/(doc|sql|setup)/ {
+                deny all;
+        }
+            location ~ /phpmyadmin/(.+\.php)$ {
+                fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+                include snippets/fastcgi-php.conf;
+            }
+        }
+        }
+        ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
+
+        sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
+        sudo ln -s /var/web /var/www/$server_name/html
+        hide_output sudo systemctl reload php7.3-fpm.service
+        hide_output sudo systemctl restart nginx.service
+        echo -e "$GREEN Done...$COL_RESET"
+            
+        if [[ ("$ssl_install" == "y" || "$ssl_install" == "Y") ]]; then
+
+
+            
+            # Install SSL (with SubDomain)
+            echo
+            echo -e "Install LetsEncrypt and setting SSL (with SubDomain)"
+            echo
+            
+            apt_install letsencrypt
+            sudo letsencrypt certonly -a webroot --webroot-path=/var/web --email "$EMAIL" --agree-tos -d "$server_name"
+            sudo rm /etc/nginx/sites-available/$server_name.conf
+            sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+            # I am SSL Man!
+            echo 'include /etc/nginx/blockuseragents.rules;
+            server {
+            if ($blockedagent) {
+                        return 403;
+                }
+                if ($request_method !~ ^(GET|HEAD|POST)$) {
+                return 444;
+                }
+                listen 80;
+                listen [::]:80;
+                server_name '"${server_name}"';
+                # enforce https
+                return 301 https://$server_name$request_uri;
+            }
+            
+            server {
+            if ($blockedagent) {
+                        return 403;
+                }
+                if ($request_method !~ ^(GET|HEAD|POST)$) {
+                return 444;
+                }
+                    listen 443 ssl http2;
+                    listen [::]:443 ssl http2;
+                    server_name '"${server_name}"';
+                
+                    root /var/www/'"${server_name}"'/html/web;
+                    index index.php;
+                
+                    access_log /var/log/nginx/'"${server_name}"'.app-access.log;
+                    error_log  /var/log/nginx/'"${server_name}"'.app-error.log;
+                
+                    # allow larger file uploads and longer script runtimes
+            client_body_buffer_size  50k;
+                client_header_buffer_size 50k;
+                client_max_body_size 50k;
+                large_client_header_buffers 2 50k;
+                sendfile off;
+                
+                    # strengthen ssl security
+                    ssl_certificate /etc/letsencrypt/live/'"${server_name}"'/fullchain.pem;
+                    ssl_certificate_key /etc/letsencrypt/live/'"${server_name}"'/privkey.pem;
+                    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+                    ssl_prefer_server_ciphers on;
+                    ssl_session_cache shared:SSL:10m;
+                    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:ECDHE-RSA-AES128-GCM-SHA256:AES256+EECDH:DHE-RSA-AES128-GCM-SHA256:AES256+EDH:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+                    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+                
+                    # Add headers to serve security related headers
+                    add_header Strict-Transport-Security "max-age=15768000; preload;";
+                    add_header X-Content-Type-Options nosniff;
+                    add_header X-XSS-Protection "1; mode=block";
+                    add_header X-Robots-Tag none;
+                    add_header Content-Security-Policy "frame-ancestors 'self'";
+                
+                location / {
+                try_files $uri $uri/ /index.php?$args;
+                }
+                location @rewrite {
+                rewrite ^/(.*)$ /index.php?r=$1;
+                }
+            
+                
+                    location ~ ^/index\.php$ {
+                        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+                        fastcgi_index index.php;
+                        include fastcgi_params;
+                        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                        fastcgi_intercept_errors off;
+                        fastcgi_buffer_size 16k;
+                        fastcgi_buffers 4 16k;
+                        fastcgi_connect_timeout 300;
+                        fastcgi_send_timeout 300;
+                        fastcgi_read_timeout 300;
+                        include /etc/nginx/fastcgi_params;
+                    try_files $uri $uri/ =404;
+                }
+                location ~ \.php$ {
+                    return 404;
+                }
+                location ~ \.sh {
+                return 404;
+                }
+                
+                    location ~ /\.ht {
+                        deny all;
+                    }
+                location /phpmyadmin {
+                root /usr/share/;
+                index index.php;
+                try_files $uri $uri/ =404;
+                location ~ ^/phpmyadmin/(doc|sql|setup)/ {
+                    deny all;
+            }
+                location ~ /phpmyadmin/(.+\.php)$ {
+                    fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+                    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                    include fastcgi_params;
+                    include snippets/fastcgi-php.conf;
+            }
+            }
+            }
+                
+            ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
+        fi
         
-    ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
-	fi
-	
-	hide_output sudo systemctl reload php7.3-fpm.service
-	hide_output sudo systemctl restart nginx.service
-	echo -e "$GREEN Done...$COL_RESET"
+        hide_output sudo systemctl reload php7.3-fpm.service
+        hide_output sudo systemctl restart nginx.service
+        echo -e "$GREEN Done...$COL_RESET"
 	
 	
 	else
-	echo 'include /etc/nginx/blockuseragents.rules;
-	server {
-	if ($blockedagent) {
-                return 403;
-        }
-        if ($request_method !~ ^(GET|HEAD|POST)$) {
-        return 444;
-        }
-        listen 80;
-        listen [::]:80;
-        server_name '"${server_name}"' www.'"${server_name}"';
-        root "/var/www/'"${server_name}"'/html/web";
-        index index.html index.htm index.php;
-        charset utf-8;
-    
-        location / {
-        try_files $uri $uri/ /index.php?$args;
-        }
-        location @rewrite {
-        rewrite ^/(.*)$ /index.php?r=$1;
-        }
-    
-        location = /favicon.ico { access_log off; log_not_found off; }
-        location = /robots.txt  { access_log off; log_not_found off; }
-    
-        access_log /var/log/nginx/'"${server_name}"'.app-access.log;
-        error_log /var/log/nginx/'"${server_name}"'.app-error.log;
-    
-        # allow larger file uploads and longer script runtimes
- 	client_body_buffer_size  50k;
-        client_header_buffer_size 50k;
-        client_max_body_size 50k;
-        large_client_header_buffers 2 50k;
-        sendfile off;
-    
-        location ~ ^/index\.php$ {
-            fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
-            fastcgi_index index.php;
-            include fastcgi_params;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            fastcgi_intercept_errors off;
-            fastcgi_buffer_size 16k;
-            fastcgi_buffers 4 16k;
-            fastcgi_connect_timeout 300;
-            fastcgi_send_timeout 300;
-            fastcgi_read_timeout 300;
-	    try_files $uri $uri/ =404;
-        }
-		location ~ \.php$ {
-        	return 404;
-        }
-		location ~ \.sh {
-		return 404;
-        }
-		location ~ /\.ht {
-		deny all;
-        }
-		location ~ /.well-known {
-		allow all;
-        }
-		location /phpmyadmin {
-  		root /usr/share/;
-  		index index.php;
-  		try_files $uri $uri/ =404;
-  		location ~ ^/phpmyadmin/(doc|sql|setup)/ {
-    		deny all;
-  	}
-  		location ~ /phpmyadmin/(.+\.php)$ {
-    		fastcgi_pass unix:/run/php/php7.3-fpm.sock;
-    		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    		include fastcgi_params;
-    		include snippets/fastcgi-php.conf;
-  	    }
-      }
-    }
-    ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
-
-    sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
-    sudo ln -s /var/web /var/www/$server_name/html
-    hide_output sudo systemctl reload php7.3-fpm.service
-    hide_output sudo systemctl restart nginx.service
-    echo -e "$GREEN Done...$COL_RESET"
-   
-	
-    if [[ ("$ssl_install" == "y" || "$ssl_install" == "Y" || "$ssl_install" == "") ]]; then
-    
-    # Install SSL (without SubDomain)
-    echo
-    echo -e "Install LetsEncrypt and setting SSL (without SubDomain)"
-    echo
-    sleep 3
-    
-    apt_install letsencrypt
-    sudo letsencrypt certonly -a webroot --webroot-path=/var/web --email "$EMAIL" --agree-tos -d "$server_name" -d www."$server_name"
-    sudo rm /etc/nginx/sites-available/$server_name.conf
-    sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-    # I am SSL Man!
-	echo 'include /etc/nginx/blockuseragents.rules;
-	server {
-	if ($blockedagent) {
-                return 403;
-        }
-        if ($request_method !~ ^(GET|HEAD|POST)$) {
-        return 444;
-        }
-        listen 80;
-        listen [::]:80;
-        server_name '"${server_name}"';
-    	# enforce https
-        return 301 https://$server_name$request_uri;
-	}
-	
-	server {
-	if ($blockedagent) {
-                return 403;
-        }
-        if ($request_method !~ ^(GET|HEAD|POST)$) {
-        return 444;
-        }
-            listen 443 ssl http2;
-            listen [::]:443 ssl http2;
+        echo 'include /etc/nginx/blockuseragents.rules;
+        server {
+        if ($blockedagent) {
+                    return 403;
+            }
+            if ($request_method !~ ^(GET|HEAD|POST)$) {
+            return 444;
+            }
+            listen 80;
+            listen [::]:80;
             server_name '"${server_name}"' www.'"${server_name}"';
+            root "/var/www/'"${server_name}"'/html/web";
+            index index.html index.htm index.php;
+            charset utf-8;
         
-            root /var/www/'"${server_name}"'/html/web;
-            index index.php;
+            location / {
+            try_files $uri $uri/ /index.php?$args;
+            }
+            location @rewrite {
+            rewrite ^/(.*)$ /index.php?r=$1;
+            }
+        
+            location = /favicon.ico { access_log off; log_not_found off; }
+            location = /robots.txt  { access_log off; log_not_found off; }
         
             access_log /var/log/nginx/'"${server_name}"'.app-access.log;
-            error_log  /var/log/nginx/'"${server_name}"'.app-error.log;
+            error_log /var/log/nginx/'"${server_name}"'.app-error.log;
         
             # allow larger file uploads and longer script runtimes
- 	client_body_buffer_size  50k;
-        client_header_buffer_size 50k;
-        client_max_body_size 50k;
-        large_client_header_buffers 2 50k;
-        sendfile off;
-        
-            # strengthen ssl security
-            ssl_certificate /etc/letsencrypt/live/'"${server_name}"'/fullchain.pem;
-            ssl_certificate_key /etc/letsencrypt/live/'"${server_name}"'/privkey.pem;
-            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-            ssl_prefer_server_ciphers on;
-            ssl_session_cache shared:SSL:10m;
-            ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:ECDHE-RSA-AES128-GCM-SHA256:AES256+EECDH:DHE-RSA-AES128-GCM-SHA256:AES256+EDH:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
-            ssl_dhparam /etc/ssl/certs/dhparam.pem;
-        
-            # Add headers to serve security related headers
-            add_header Strict-Transport-Security "max-age=15768000; preload;";
-            add_header X-Content-Type-Options nosniff;
-            add_header X-XSS-Protection "1; mode=block";
-            add_header X-Robots-Tag none;
-            add_header Content-Security-Policy "frame-ancestors 'self'";
-        
-        location / {
-        try_files $uri $uri/ /index.php?$args;
-        }
-        location @rewrite {
-        rewrite ^/(.*)$ /index.php?r=$1;
-        }
-    
+        client_body_buffer_size  50k;
+            client_header_buffer_size 50k;
+            client_max_body_size 50k;
+            large_client_header_buffers 2 50k;
+            sendfile off;
         
             location ~ ^/index\.php$ {
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
@@ -824,42 +698,168 @@
                 fastcgi_connect_timeout 300;
                 fastcgi_send_timeout 300;
                 fastcgi_read_timeout 300;
-                include /etc/nginx/fastcgi_params;
-	    	try_files $uri $uri/ =404;
-        }
-		location ~ \.php$ {
-        	return 404;
-        }
-		location ~ \.sh {
-		return 404;
-        }
-        
-            location ~ /\.ht {
-                deny all;
+            try_files $uri $uri/ =404;
             }
-	    location /phpmyadmin {
-  		root /usr/share/;
-  		index index.php;
-  		try_files $uri $uri/ =404;
-  		location ~ ^/phpmyadmin/(doc|sql|setup)/ {
-    		deny all;
-  	}
-  		location ~ /phpmyadmin/(.+\.php)$ {
-    		fastcgi_pass unix:/run/php/php7.3-fpm.sock;
-    		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    		include fastcgi_params;
-    		include snippets/fastcgi-php.conf;
-  	    }
-      }
-    }
+            location ~ \.php$ {
+                return 404;
+            }
+            location ~ \.sh {
+            return 404;
+            }
+            location ~ /\.ht {
+            deny all;
+            }
+            location ~ /.well-known {
+            allow all;
+            }
+            location /phpmyadmin {
+            root /usr/share/;
+            index index.php;
+            try_files $uri $uri/ =404;
+            location ~ ^/phpmyadmin/(doc|sql|setup)/ {
+                deny all;
+        }
+            location ~ /phpmyadmin/(.+\.php)$ {
+                fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+                include snippets/fastcgi-php.conf;
+            }
+        }
+        }
+        ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
+
+        sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
+        sudo ln -s /var/web /var/www/$server_name/html
+        hide_output sudo systemctl reload php7.3-fpm.service
+        hide_output sudo systemctl restart nginx.service
+        echo -e "$GREEN Done...$COL_RESET"
+    
         
-    ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
+        if [[ ("$ssl_install" == "y" || "$ssl_install" == "Y") ]]; then
+            
+            # Install SSL (without SubDomain)
+            echo
+            echo -e "Install LetsEncrypt and setting SSL (without SubDomain)"
+            echo
+            sleep 3
+            
+            apt_install letsencrypt
+            sudo letsencrypt certonly -a webroot --webroot-path=/var/web --email "$EMAIL" --agree-tos -d "$server_name" -d www."$server_name"
+            sudo rm /etc/nginx/sites-available/$server_name.conf
+            sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+            # I am SSL Man!
+            echo 'include /etc/nginx/blockuseragents.rules;
+            server {
+            if ($blockedagent) {
+                        return 403;
+                }
+                if ($request_method !~ ^(GET|HEAD|POST)$) {
+                return 444;
+                }
+                listen 80;
+                listen [::]:80;
+                server_name '"${server_name}"';
+                # enforce https
+                return 301 https://$server_name$request_uri;
+            }
+            
+            server {
+            if ($blockedagent) {
+                        return 403;
+                }
+                if ($request_method !~ ^(GET|HEAD|POST)$) {
+                return 444;
+                }
+                    listen 443 ssl http2;
+                    listen [::]:443 ssl http2;
+                    server_name '"${server_name}"' www.'"${server_name}"';
+                
+                    root /var/www/'"${server_name}"'/html/web;
+                    index index.php;
+                
+                    access_log /var/log/nginx/'"${server_name}"'.app-access.log;
+                    error_log  /var/log/nginx/'"${server_name}"'.app-error.log;
+                
+                    # allow larger file uploads and longer script runtimes
+            client_body_buffer_size  50k;
+                client_header_buffer_size 50k;
+                client_max_body_size 50k;
+                large_client_header_buffers 2 50k;
+                sendfile off;
+                
+                    # strengthen ssl security
+                    ssl_certificate /etc/letsencrypt/live/'"${server_name}"'/fullchain.pem;
+                    ssl_certificate_key /etc/letsencrypt/live/'"${server_name}"'/privkey.pem;
+                    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+                    ssl_prefer_server_ciphers on;
+                    ssl_session_cache shared:SSL:10m;
+                    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:ECDHE-RSA-AES128-GCM-SHA256:AES256+EECDH:DHE-RSA-AES128-GCM-SHA256:AES256+EDH:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+                    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+                
+                    # Add headers to serve security related headers
+                    add_header Strict-Transport-Security "max-age=15768000; preload;";
+                    add_header X-Content-Type-Options nosniff;
+                    add_header X-XSS-Protection "1; mode=block";
+                    add_header X-Robots-Tag none;
+                    add_header Content-Security-Policy "frame-ancestors 'self'";
+                
+                location / {
+                try_files $uri $uri/ /index.php?$args;
+                }
+                location @rewrite {
+                rewrite ^/(.*)$ /index.php?r=$1;
+                }
+            
+                
+                    location ~ ^/index\.php$ {
+                        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+                        fastcgi_index index.php;
+                        include fastcgi_params;
+                        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                        fastcgi_intercept_errors off;
+                        fastcgi_buffer_size 16k;
+                        fastcgi_buffers 4 16k;
+                        fastcgi_connect_timeout 300;
+                        fastcgi_send_timeout 300;
+                        fastcgi_read_timeout 300;
+                        include /etc/nginx/fastcgi_params;
+                    try_files $uri $uri/ =404;
+                }
+                location ~ \.php$ {
+                    return 404;
+                }
+                location ~ \.sh {
+                return 404;
+                }
+                
+                    location ~ /\.ht {
+                        deny all;
+                    }
+                location /phpmyadmin {
+                root /usr/share/;
+                index index.php;
+                try_files $uri $uri/ =404;
+                location ~ ^/phpmyadmin/(doc|sql|setup)/ {
+                    deny all;
+            }
+                location ~ /phpmyadmin/(.+\.php)$ {
+                    fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+                    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                    include fastcgi_params;
+                    include snippets/fastcgi-php.conf;
+                }
+            }
+            }
+                
+            ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
 
-	echo -e "$GREEN Done...$COL_RESET"
+            echo -e "$GREEN Done...$COL_RESET"
 
-    fi
-    hide_output sudo systemctl reload php7.3-fpm.service
-    hide_output sudo systemctl restart nginx.service
+        fi
+        hide_output sudo systemctl reload php7.3-fpm.service
+        hide_output sudo systemctl restart nginx.service
     fi
     
     
@@ -973,148 +973,148 @@
         	# fix for the .gz file that is really a rar file
         	apt_install unrar
        		unrar e 2021-06-21-yaamp.sql.gz
-        	cat 2021-06-21-yaamp.sql | sudo mysql 
+        	cat 2021-06-21-yaamp.sql | sudo mysql yiimpfrontend
 
 
 		# Oh the humanity!
-		sudo mysql  --force < 2015-07-01-accounts_hostaddr.sql
-		sudo mysql  --force < 2015-07-15-coins_hasmasternodes.sql
-		sudo mysql  --force < 2015-09-20-blocks_worker.sql
-		sudo mysql  --force < 2016-02-17-payouts_errmsg.sql
-		sudo mysql  --force < 2016-02-18-accounts_donation.sql
-		sudo mysql  --force < 2016-02-23-shares_diff.sql
-		sudo mysql  --force < 2016-03-26-markets.sql
-		sudo mysql  --force < 2016-03-30-coins.sql
-		sudo mysql  --force < 2016-04-03-accounts.sql
-		sudo mysql  --force < 2016-04-24-market_history.sql
-		sudo mysql  --force < 2016-04-27-settings.sql
-		sudo mysql  --force < 2016-05-11-coins.sql
-		sudo mysql  --force < 2016-05-15-benchmarks.sql
-		sudo mysql  --force < 2016-05-23-bookmarks.sql
-		sudo mysql  --force < 2016-06-01-notifications.sql
-		sudo mysql  --force < 2016-06-04-bench_chips.sql
-		sudo mysql  --force < 2016-11-23-coins.sql
-		sudo mysql  --force < 2017-02-05-benchmarks.sql
-		sudo mysql  --force < 2017-03-31-earnings_index.sql
-		sudo mysql  --force < 2017-05-accounts_case_swaptime.sql
-		sudo mysql  --force < 2017-06-payouts_coinid_memo.sql
-		sudo mysql  --force < 2017-09-notifications.sql
-		sudo mysql  --force < 2017-10-bookmarks.sql
-		sudo mysql  --force < 2017-11-segwit.sql
-		sudo mysql  --force < 2018-01-stratums_ports.sql
-		sudo mysql  --force < 2018-02-coins_getinfo.sql
-		sudo mysql  --force < 2018-09-22-workers.sql
-		sudo mysql  --force < 2019-03-coins_thepool_life.sql
-		sudo mysql  --force < 2020-06-03-blocks.sql
+		sudo mysql yiimpfrontend --force < 2015-07-01-accounts_hostaddr.sql
+		sudo mysql yiimpfrontend --force < 2015-07-15-coins_hasmasternodes.sql
+		sudo mysql yiimpfrontend --force < 2015-09-20-blocks_worker.sql
+		sudo mysql yiimpfrontend --force < 2016-02-17-payouts_errmsg.sql
+		sudo mysql yiimpfrontend --force < 2016-02-18-accounts_donation.sql
+		sudo mysql yiimpfrontend --force < 2016-02-23-shares_diff.sql
+		sudo mysql yiimpfrontend --force < 2016-03-26-markets.sql
+		sudo mysql yiimpfrontend --force < 2016-03-30-coins.sql
+		sudo mysql yiimpfrontend --force < 2016-04-03-accounts.sql
+		sudo mysql yiimpfrontend --force < 2016-04-24-market_history.sql
+		sudo mysql yiimpfrontend --force < 2016-04-27-settings.sql
+		sudo mysql yiimpfrontend --force < 2016-05-11-coins.sql
+		sudo mysql yiimpfrontend --force < 2016-05-15-benchmarks.sql
+		sudo mysql yiimpfrontend --force < 2016-05-23-bookmarks.sql
+		sudo mysql yiimpfrontend --force < 2016-06-01-notifications.sql
+		sudo mysql yiimpfrontend --force < 2016-06-04-bench_chips.sql
+		sudo mysql yiimpfrontend --force < 2016-11-23-coins.sql
+		sudo mysql yiimpfrontend --force < 2017-02-05-benchmarks.sql
+		sudo mysql yiimpfrontend --force < 2017-03-31-earnings_index.sql
+		sudo mysql yiimpfrontend --force < 2017-05-accounts_case_swaptime.sql
+		sudo mysql yiimpfrontend --force < 2017-06-payouts_coinid_memo.sql
+		sudo mysql yiimpfrontend --force < 2017-09-notifications.sql
+		sudo mysql yiimpfrontend --force < 2017-10-bookmarks.sql
+		sudo mysql yiimpfrontend --force < 2017-11-segwit.sql
+		sudo mysql yiimpfrontend --force < 2018-01-stratums_ports.sql
+		sudo mysql yiimpfrontend --force < 2018-02-coins_getinfo.sql
+		sudo mysql yiimpfrontend --force < 2018-09-22-workers.sql
+		sudo mysql yiimpfrontend --force < 2019-03-coins_thepool_life.sql
+		sudo mysql yiimpfrontend --force < 2020-06-03-blocks.sql
     elif [[ "$yiimpver" == "2" ]]; then
 		# Tpruvot Sql
 
 		# Import sql dump
-		sudo zcat 2016-04-03-yaamp.sql.gz | sudo mysql 
+		sudo zcat 2016-04-03-yaamp.sql.gz | sudo mysql yiimpfrontend 
 
 		# Oh the humanity!
-		sudo mysql  --force < 2015-07-01-accounts_hostaddr.sql
-		sudo mysql  --force < 2015-07-15-coins_hasmasternodes.sql
-		sudo mysql  --force < 2015-09-20-blocks_worker.sql
-		sudo mysql  --force < 2016-02-17-payouts_errmsg.sql
-		sudo mysql  --force < 2016-02-18-accounts_donation.sql
-		sudo mysql  --force < 2016-02-23-shares_diff.sql
-		sudo mysql  --force < 2016-03-26-markets.sql
-		sudo mysql  --force < 2016-03-30-coins.sql
-		sudo mysql  --force < 2016-04-03-accounts.sql
-		sudo mysql  --force < 2016-04-24-market_history.sql
-		sudo mysql  --force < 2016-04-27-settings.sql
-		sudo mysql  --force < 2016-05-11-coins.sql
-		sudo mysql  --force < 2016-05-15-benchmarks.sql
-		sudo mysql  --force < 2016-05-23-bookmarks.sql
-		sudo mysql  --force < 2016-06-01-notifications.sql
-		sudo mysql  --force < 2016-06-04-bench_chips.sql
-		sudo mysql  --force < 2016-11-23-coins.sql
-		sudo mysql  --force < 2017-02-05-benchmarks.sql
-		sudo mysql  --force < 2017-03-31-earnings_index.sql
-		sudo mysql  --force < 2017-05-accounts_case_swaptime.sql
-		sudo mysql  --force < 2017-06-payouts_coinid_memo.sql
-		sudo mysql  --force < 2017-09-notifications.sql
-		sudo mysql  --force < 2017-10-bookmarks.sql
-		sudo mysql  --force < 2017-11-segwit.sql
-		sudo mysql  --force < 2018-01-stratums_ports.sql
-		sudo mysql  --force < 2018-02-coins_getinfo.sql
+		sudo mysql yiimpfrontend --force < 2015-07-01-accounts_hostaddr.sql
+		sudo mysql yiimpfrontend --force < 2015-07-15-coins_hasmasternodes.sql
+		sudo mysql yiimpfrontend --force < 2015-09-20-blocks_worker.sql
+		sudo mysql yiimpfrontend --force < 2016-02-17-payouts_errmsg.sql
+		sudo mysql yiimpfrontend --force < 2016-02-18-accounts_donation.sql
+		sudo mysql yiimpfrontend --force < 2016-02-23-shares_diff.sql
+		sudo mysql yiimpfrontend --force < 2016-03-26-markets.sql
+		sudo mysql yiimpfrontend --force < 2016-03-30-coins.sql
+		sudo mysql yiimpfrontend --force < 2016-04-03-accounts.sql
+		sudo mysql yiimpfrontend --force < 2016-04-24-market_history.sql
+		sudo mysql yiimpfrontend --force < 2016-04-27-settings.sql
+		sudo mysql yiimpfrontend --force < 2016-05-11-coins.sql
+		sudo mysql yiimpfrontend --force < 2016-05-15-benchmarks.sql
+		sudo mysql yiimpfrontend --force < 2016-05-23-bookmarks.sql
+		sudo mysql yiimpfrontend --force < 2016-06-01-notifications.sql
+		sudo mysql yiimpfrontend --force < 2016-06-04-bench_chips.sql
+		sudo mysql yiimpfrontend --force < 2016-11-23-coins.sql
+		sudo mysql yiimpfrontend --force < 2017-02-05-benchmarks.sql
+		sudo mysql yiimpfrontend --force < 2017-03-31-earnings_index.sql
+		sudo mysql yiimpfrontend --force < 2017-05-accounts_case_swaptime.sql
+		sudo mysql yiimpfrontend --force < 2017-06-payouts_coinid_memo.sql
+		sudo mysql yiimpfrontend --force < 2017-09-notifications.sql
+		sudo mysql yiimpfrontend --force < 2017-10-bookmarks.sql
+		sudo mysql yiimpfrontend --force < 2017-11-segwit.sql
+		sudo mysql yiimpfrontend --force < 2018-01-stratums_ports.sql
+		sudo mysql yiimpfrontend --force < 2018-02-coins_getinfo.sql
 	elif [[ "$yiimpver" == "3" ]]; then
 		# Afiniel Tech Sql
 
 
 		# Import sql dump
-		sudo zcat 2016-04-03-yaamp.sql.gz | sudo mysql 
+		sudo zcat 2016-04-03-yaamp.sql.gz | sudo mysql yiimpfrontend
 
 		# Oh the humanity!
-		sudo mysql  --force < 2015-07-01-accounts_hostaddr.sql
-		sudo mysql  --force < 2015-07-15-coins_hasmasternodes.sql
-		sudo mysql  --force < 2015-09-20-blocks_worker.sql
-		sudo mysql  --force < 2016-02-17-payouts_errmsg.sql
-		sudo mysql  --force < 2016-02-18-accounts_donation.sql
-		sudo mysql  --force < 2016-02-23-shares_diff.sql
-		sudo mysql  --force < 2016-03-26-markets.sql
-		sudo mysql  --force < 2016-03-30-coins.sql
-		sudo mysql  --force < 2016-04-03-accounts.sql
-		sudo mysql  --force < 2016-04-24-market_history.sql
-		sudo mysql  --force < 2016-04-27-settings.sql
-		sudo mysql  --force < 2016-05-11-coins.sql
-		sudo mysql  --force < 2016-05-15-benchmarks.sql
-		sudo mysql  --force < 2016-05-23-bookmarks.sql
-		sudo mysql  --force < 2016-06-01-notifications.sql
-		sudo mysql  --force < 2016-06-04-bench_chips.sql
-		sudo mysql  --force < 2016-11-23-coins.sql
-		sudo mysql  --force < 2017-02-05-benchmarks.sql
-		sudo mysql  --force < 2017-03-31-earnings_index.sql
-		sudo mysql  --force < 2017-05-accounts_case_swaptime.sql
-		sudo mysql  --force < 2017-06-payouts_coinid_memo.sql
-		sudo mysql  --force < 2017-09-notifications.sql
-		sudo mysql  --force < 2017-10-bookmarks.sql
-		sudo mysql  --force < 2017-11-segwit.sql
-		sudo mysql  --force < 2018-01-stratums_ports.sql
-		sudo mysql  --force < 2018-02-coins_getinfo.sql
-		sudo mysql  --force < 2018-09-22-workers.sql
-		sudo mysql  --force < 2019-03-coins_thepool_life.sql
-		sudo mysql  --force < 2019-11-10-yiimp.sql.gz
-		sudo mysql  --force < 2020-06-03-blocks.sql
+		sudo mysql yiimpfrontend --force < 2015-07-01-accounts_hostaddr.sql
+		sudo mysql yiimpfrontend --force < 2015-07-15-coins_hasmasternodes.sql
+		sudo mysql yiimpfrontend --force < 2015-09-20-blocks_worker.sql
+		sudo mysql yiimpfrontend --force < 2016-02-17-payouts_errmsg.sql
+		sudo mysql yiimpfrontend --force < 2016-02-18-accounts_donation.sql
+		sudo mysql yiimpfrontend --force < 2016-02-23-shares_diff.sql
+		sudo mysql yiimpfrontend --force < 2016-03-26-markets.sql
+		sudo mysql yiimpfrontend --force < 2016-03-30-coins.sql
+		sudo mysql yiimpfrontend --force < 2016-04-03-accounts.sql
+		sudo mysql yiimpfrontend --force < 2016-04-24-market_history.sql
+		sudo mysql yiimpfrontend --force < 2016-04-27-settings.sql
+		sudo mysql yiimpfrontend --force < 2016-05-11-coins.sql
+		sudo mysql yiimpfrontend --force < 2016-05-15-benchmarks.sql
+		sudo mysql yiimpfrontend --force < 2016-05-23-bookmarks.sql
+		sudo mysql yiimpfrontend --force < 2016-06-01-notifications.sql
+		sudo mysql yiimpfrontend --force < 2016-06-04-bench_chips.sql
+		sudo mysql yiimpfrontend --force < 2016-11-23-coins.sql
+		sudo mysql yiimpfrontend --force < 2017-02-05-benchmarks.sql
+		sudo mysql yiimpfrontend --force < 2017-03-31-earnings_index.sql
+		sudo mysql yiimpfrontend --force < 2017-05-accounts_case_swaptime.sql
+		sudo mysql yiimpfrontend --force < 2017-06-payouts_coinid_memo.sql
+		sudo mysql yiimpfrontend --force < 2017-09-notifications.sql
+		sudo mysql yiimpfrontend --force < 2017-10-bookmarks.sql
+		sudo mysql yiimpfrontend --force < 2017-11-segwit.sql
+		sudo mysql yiimpfrontend --force < 2018-01-stratums_ports.sql
+		sudo mysql yiimpfrontend --force < 2018-02-coins_getinfo.sql
+		sudo mysql yiimpfrontend --force < 2018-09-22-workers.sql
+		sudo mysql yiimpfrontend --force < 2019-03-coins_thepool_life.sql
+		sudo mysql yiimpfrontend --force < 2019-11-10-yiimp.sql.gz
+		sudo mysql yiimpfrontend --force < 2020-06-03-blocks.sql
 	elif [[ "$yiimpver" == "4" ]]; then
 		# Afiniel
 
 		# Import sql dump
-		sudo zcat 2021-06-21-yaamp.sql.gz | sudo mysql 
+		sudo zcat 2021-06-21-yaamp.sql.gz | sudo mysql yiimpfrontend
 		
 		# Oh the humanity!
-		sudo mysql  --force < 2015-07-01-accounts_hostaddr.sql
-		sudo mysql  --force < 2015-07-15-coins_hasmasternodes.sql
-		sudo mysql  --force < 2015-09-20-blocks_worker.sql
-		sudo mysql  --force < 2016-02-17-payouts_errmsg.sql
-		sudo mysql  --force < 2016-02-18-accounts_donation.sql
-		sudo mysql  --force < 2016-02-23-shares_diff.sql
-		sudo mysql  --force < 2016-03-26-markets.sql
-		sudo mysql  --force < 2016-03-30-coins.sql
-		sudo mysql  --force < 2016-04-03-accounts.sql
-		sudo mysql  --force < 2016-04-24-market_history.sql
-		sudo mysql  --force < 2016-04-27-settings.sql
-		sudo mysql  --force < 2016-05-11-coins.sql
-		sudo mysql  --force < 2016-05-15-benchmarks.sql
-		sudo mysql  --force < 2016-05-23-bookmarks.sql
-		sudo mysql  --force < 2016-06-01-notifications.sql
-		sudo mysql  --force < 2016-06-04-bench_chips.sql
-		sudo mysql  --force < 2016-11-23-coins.sql
-		sudo mysql  --force < 2017-02-05-benchmarks.sql
-		sudo mysql  --force < 2017-03-31-earnings_index.sql
-		sudo mysql  --force < 2017-05-accounts_case_swaptime.sql
-		sudo mysql  --force < 2017-06-payouts_coinid_memo.sql
-		sudo mysql  --force < 2017-09-notifications.sql
-		sudo mysql  --force < 2017-10-bookmarks.sql
-		sudo mysql  --force < 2017-11-segwit.sql
-		sudo mysql  --force < 2018-01-stratums_ports.sql
-		sudo mysql  --force < 2018-02-coins_getinfo.sql
-		sudo mysql  --force < 2018-09-22-workers.sql
-		sudo mysql  --force < 2019-03-coins_thepool_life.sql
-		sudo mysql  --force < 2020-06-03-blocks.sql
-		#sudo mysql  --force < 2020-11-10-yaamp.sql.gz
-		#sudo mysql  --force < 2021-06-21-yaamp.sql.gz
+		sudo mysql yiimpfrontend --force < 2015-07-01-accounts_hostaddr.sql
+		sudo mysql yiimpfrontend --force < 2015-07-15-coins_hasmasternodes.sql
+		sudo mysql yiimpfrontend --force < 2015-09-20-blocks_worker.sql
+		sudo mysql yiimpfrontend --force < 2016-02-17-payouts_errmsg.sql
+		sudo mysql yiimpfrontend --force < 2016-02-18-accounts_donation.sql
+		sudo mysql yiimpfrontend --force < 2016-02-23-shares_diff.sql
+		sudo mysql yiimpfrontend --force < 2016-03-26-markets.sql
+		sudo mysql yiimpfrontend --force < 2016-03-30-coins.sql
+		sudo mysql yiimpfrontend --force < 2016-04-03-accounts.sql
+		sudo mysql yiimpfrontend --force < 2016-04-24-market_history.sql
+		sudo mysql yiimpfrontend --force < 2016-04-27-settings.sql
+		sudo mysql yiimpfrontend --force < 2016-05-11-coins.sql
+		sudo mysql yiimpfrontend --force < 2016-05-15-benchmarks.sql
+		sudo mysql yiimpfrontend --force < 2016-05-23-bookmarks.sql
+		sudo mysql yiimpfrontend --force < 2016-06-01-notifications.sql
+		sudo mysql yiimpfrontend --force < 2016-06-04-bench_chips.sql
+		sudo mysql yiimpfrontend --force < 2016-11-23-coins.sql
+		sudo mysql yiimpfrontend --force < 2017-02-05-benchmarks.sql
+		sudo mysql yiimpfrontend --force < 2017-03-31-earnings_index.sql
+		sudo mysql yiimpfrontend --force < 2017-05-accounts_case_swaptime.sql
+		sudo mysql yiimpfrontend --force < 2017-06-payouts_coinid_memo.sql
+		sudo mysql yiimpfrontend --force < 2017-09-notifications.sql
+		sudo mysql yiimpfrontend --force < 2017-10-bookmarks.sql
+		sudo mysql yiimpfrontend --force < 2017-11-segwit.sql
+		sudo mysql yiimpfrontend --force < 2018-01-stratums_ports.sql
+		sudo mysql yiimpfrontend --force < 2018-02-coins_getinfo.sql
+		sudo mysql yiimpfrontend --force < 2018-09-22-workers.sql
+		sudo mysql yiimpfrontend --force < 2019-03-coins_thepool_life.sql
+		sudo mysql yiimpfrontend --force < 2020-06-03-blocks.sql
+		#sudo mysql yiimpfrontend --force < 2020-11-10-yaamp.sql.gz
+		#sudo mysql yiimpfrontend --force < 2021-06-21-yaamp.sql.gz
 	fi
 
     echo -e "$GREEN Done...$COL_RESET"    
