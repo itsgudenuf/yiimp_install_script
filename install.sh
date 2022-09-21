@@ -2,7 +2,8 @@
 ################################################################################
 # Original Author:   crombiecrunch
 # Fork Author: manfromafar
-# Current Author: Vaudois
+# Fork Author: Vaudois
+# Current Author: itsgudenuf
 #
 # Program:
 #   Install yiimp on Ubuntu 16.04/18.04 running Nginx, MariaDB, and php7.3
@@ -11,7 +12,7 @@
 ################################################################################
 	
 	### Variable ###
-    githubyiimptpruvot=https://github.com/tpruvot/yiimp.git
+    	githubyiimptpruvot=https://github.com/tpruvot/yiimp.git
 	githubrepoKudaraidee=https://github.com/Kudaraidee/yiimp.git
 	githubrepoAfinielTech=https://github.com/Afiniel-tech/yiimp.git
 	githubrepoAfiniel=https://github.com/afiniel/yiimp
@@ -1152,7 +1153,7 @@ echo '
     define('"'"'YIIMP_FIAT_ALTERNATIVE'"'"', '"'"'USD'"'"'); // USD is main
     define('"'"'YAAMP_USE_NICEHASH_API'"'"', false);
     
-    define('"'"'YAAMP_BTCADDRESS'"'"', '"'"'bc1qpnxtg3dvtglrvfllfk3gslt6h5zffkf069nh8r'"'"');
+    define('"'"'YAAMP_BTCADDRESS'"'"', '"'"'bc1qp0m22e70d7qv9kdxd8kyw7xy47mk8gq3r4xy7v'"'"');   // You might want to change this, or send your coin to Me :)
     
     define('"'"'YAAMP_SITE_URL'"'"', '"'"''"${server_name}"''"'"');
     define('"'"'YAAMP_STRATUM_URL'"'"', YAAMP_SITE_URL); // change if your stratum server is on a different host
@@ -1226,7 +1227,7 @@ echo '
     define('"'"'NICEHASH_DEPOSIT_AMOUNT'"'"','"'"'0.01'"'"');
     
     $cold_wallet_table = array(
-	'"'"'bc1qpnxtg3dvtglrvfllfk3gslt6h5zffkf069nh8r'"'"' => 0.10,
+	'"'"'bc1qp0m22e70d7qv9kdxd8kyw7xy47mk8gq3r4xy7v'"'"' => 0.10,
     );
     
     // Sample fixed pool fees
@@ -1257,75 +1258,75 @@ echo '
 
 	// #### More configs from Others Yiimp From Vaudois Github ####
 	
-	define('"'"'YAAMP_CONTACT_EMAIL'"'"', '"'"'vaudese@gmail.com'"'"');
+	//define('"'"'YAAMP_CONTACT_EMAIL'"'"', '"'"'vaudese@gmail.com'"'"');
 
-	define('"'"'YIIMP_VIEW_24H'"'"', false);
+	//define('"'"'YIIMP_VIEW_24H'"'"', false);
 
 	// Google Analytics = '"'"''"'"' == disabled
-	define('"'"'YAAMP_GOOGLE_ANALYTICS'"'"', '"'"''"'"');
+	//define('"'"'YAAMP_GOOGLE_ANALYTICS'"'"', '"'"''"'"');
 
 	// Others server Stratums of inn Worl enter name Country ex: Europe
-	define('"'"'YAAMP_THIS_SERVER_STRATUM', 'europe'"'"');
-	define('"'"'YAAMP_SERVERS_STRATUMS'"'"', array(
-	'"'"'europe'"'"',
-	'"'"'asia'"'"',
-	));
+	//define('"'"'YAAMP_THIS_SERVER_STRATUM', 'europe'"'"');
+	//define('"'"'YAAMP_SERVERS_STRATUMS'"'"', array(
+	//'"'"'europe'"'"',
+	//'"'"'asia'"'"',
+	//));
 
 	// use chat from CHATBRO.COM
-	define('"'"'YAAMP_CHATBRO'"'"', true);
-	define('"'"'YAAMP_CHATBRO_CONFIG_WEB'"'"', false);
-	define('"'"'YAAMP_CHATBRO_ID'"'"', '"'"'18UYt'"'"');
+	//define('"'"'YAAMP_CHATBRO'"'"', true);
+	//define('"'"'YAAMP_CHATBRO_CONFIG_WEB'"'"', false);
+	//define('"'"'YAAMP_CHATBRO_ID'"'"', '"'"'18UYt'"'"');
 	// YAAMP_CHATBRO_CONFIG_WEB is false you can put the name of indefinite chats eg = chat1, new = chat2, new = chat3...
-	define('"'"'YAAMP_CHATBRO_CUSTOM_NAME'"'"', '"'"'090822'"'"');
+	//define('"'"'YAAMP_CHATBRO_CUSTOM_NAME'"'"', '"'"'090822'"'"');
 
 	// Bottom links social
-	define('"'"'YAAMP_LINK_DISCORD'"'"', '"'"'DD4rhgwySG'"'"');
-	define('"'"'YAAMP_LINK_TWITTER'"'"', true);
-	define('"'"'YAAMP_LINK_MAILCONTACT'"'"', YAAMP_CONTACT_EMAIL);
+	//define('"'"'YAAMP_LINK_DISCORD'"'"', '"'"'DD4rhgwySG'"'"');
+	//define('"'"'YAAMP_LINK_TWITTER'"'"', true);
+	//define('"'"'YAAMP_LINK_MAILCONTACT'"'"', YAAMP_CONTACT_EMAIL);
 
-	# TELEGRAM CONFIG BOT AND URL
-	define('"'"'YAAMP_LINK_TELEGRAM'"'"', '"'"'+DMgAs-7cwNEzYmFk'"'"');
-	define('"'"'YAAMP_BOT_TOKEN_TELEGRAM'"'"', '"'"'5564362856:AAG05ljMt7-67F8u5Fmyg8QmOK0nJMcMQxM'"'"');
-	define('"'"'YAAMP_CHAT_ID_TELEGRAM'"'"', '"'"'-661569030'"'"');
+	//# TELEGRAM CONFIG BOT AND URL
+	//define('"'"'YAAMP_LINK_TELEGRAM'"'"', '"'"'+DMgAs-7cwNEzYmFk'"'"');
+	//define('"'"'YAAMP_BOT_TOKEN_TELEGRAM'"'"', '"'"'5564362856:AAG05ljMt7-67F8u5Fmyg8QmOK0nJMcMQxM'"'"');
+	//define('"'"'YAAMP_CHAT_ID_TELEGRAM'"'"', '"'"'-661569030'"'"');
 
-	define('"'"'YAAMP_LINK_GITHUB'"'"', false);
+	//define('"'"'YAAMP_LINK_GITHUB'"'"', false);
 
 	// FOOTER Copyright add text or html info...
-	define('"'"'YAAMP_FOOTER_COPY'"'"', '"'"''"'"');
-
-	$date_promo_start 	= new DateTime('"'"'2022-09-09'"'"');
-	$form_date_promo 	= $date_promo_start->format('"'"'Y M D H:i:s'"'"');
-	$end_date_promo 	= '"'"'end 23:59'"'"';
-	$msg_coin_up_promo 	= '"'"'For each block found, payment increase of 5%!'"'"'."\n\r"; 
-
-	define('"'"'MESSAGE_BANNER_PROMO'"'"','"'"'EXTENDED PROMOTION: Fees 0% in Shared and SOLO'"'"'."\n\r".$msg_coin_up_promo.'"'"'Start '"'"' . $form_date_promo.'"'"' '"'"'.$end_date_promo);
+	//define('"'"'YAAMP_FOOTER_COPY'"'"', '"'"''"'"');
+    //
+	//$date_promo_start 	= new DateTime('"'"'2022-09-09'"'"');
+	//$form_date_promo 	= $date_promo_start->format('"'"'Y M D H:i:s'"'"');
+	//$end_date_promo 	= '"'"'end 23:59'"'"';
+	//$msg_coin_up_promo 	= '"'"'For each block found, payment increase of 5%!'"'"'."\n\r"; 
+    //
+	//define('"'"'MESSAGE_BANNER_PROMO'"'"','"'"'EXTENDED PROMOTION: Fees 0% in Shared and SOLO'"'"'."\n\r".$msg_coin_up_promo.'"'"'Start '"'"' . $form_date_promo.'"'"' '"'"'.$end_date_promo);
 
 	// define fee in % with COIN exp: '"'"'BTC'"'"' => 1.0,
-	$configFixedPoolFeesCoin = array(
-		//'"'"'JGC'"'"' => '"'"'0'"'"',
-	);
+	//$configFixedPoolFeesCoin = array(
+	//	//'"'"'JGC'"'"' => '"'"'0'"'"',
+	//);
 
-	$configFixedPoolFeesCoinSolo = array(
-		//'"'"'JGC'"'"' => '"'"'0'"'"',
-	);
+	//$configFixedPoolFeesCoinSolo = array(
+	//	//'"'"'JGC'"'"' => '"'"'0'"'"',
+	//);
 
 	// define REWARDS in % SWITH COIN FEE = 0, with COIN exp: '"'"'BTC'"'"' => 1,  <-- this rewards block + 1%
-	$configFixedPoolRewardsCoin = array(
-		//'"'"'JGC'"'"' => 5,
-	);
+	//$configFixedPoolRewardsCoin = array(
+	//	//'"'"'JGC'"'"' => 5,
+	//);
 
 	// COIN MESSAGE = RPC Error: error -8: dummy value must be set to "*", add COIN in line (coin_results.php)
-	define('"'"'RPC_ERROR_8'"'"', array(
-		'"'"'VTC'"'"',
-		'"'"'LTC'"'"',
-	));
+	//define('"'"'RPC_ERROR_8'"'"', array(
+	//	'"'"'VTC'"'"',
+	//	'"'"'LTC'"'"',
+	//));
 
 	// COIN ERROR PAIMENTS = RPC Error (payment.php)
 	// todo: enhance/detect payout_max from normal sendmany error
-	define('"'"'RPC_ERROR_PAIMENT'"'"', array(
-		'"'"'CURVE'"'"',
-		'"'"'JGC'"'"',
-	));
+	//define('"'"'RPC_ERROR_PAIMENT'"'"', array(
+	//	'"'"'CURVE'"'"',
+	//	'"'"'JGC'"'"',
+	//));
 
     ' | sudo -E tee /var/web/serverconfig.php >/dev/null 2>&1
 
