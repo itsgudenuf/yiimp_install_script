@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+#
+#    10-sysinfo - generate the system information
+#    Copyright (c) 2013 Nick Charlton
+#
+#    Authors: Nick Charlton <hello@nickcharlton.net>
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+###########################################
+# Inspired by Dirty Harry for YiiMP use... #
+###########################################
+
+date=`date`
+ps -aux | grep "[m]ain" > /dev/null 2>&1
+if [[ "$?" == "0" ]]; then
+        main="running"
+else
+        main="stopped"
+fi
+ps -aux | grep "[b]locks" > /dev/null 2>&1
+if [[ "$?" == "0" ]]; then
+        blocks="running"
+else
+        blocks="stopped"
+fi
+ps -aux | grep "[l]oop2" > /dev/null 2>&1
+if [[ "$?" == "0" ]]; then
+        loop2="running"
+else
+        loop2="stopped"
+fi
+ps -aux | grep "[l]og/yiimp/debug.log" > /dev/null 2>&1
+if [[ "$?" == "0" ]]; then
+        debug="running"
+else
+        debug="stopped"
+fi
+
+site='/var/web'
+stratum='/var/stratum'
+hint1="To view a screen type, screen -r main|loop2|blocks|debug"
+hint2="To detach from a screen type, ctrl+a+d"
+divider===============================
+divider=$divider$divider
+header=" %-7s %-25s %-16s %-15s\n"
+width=50
+RED=$'\033[00;31m'
+GREEN=$'\033[00;32m'
+RESTORE=$'\033[0m'
+echo "System information as of: $date"
+echo
+/usr/bin/landscape-sysinfo
+echo
+echo "YiiMP Information:"
+printf "%$width.${width}s\n" "$divider"
+if [[ $main = stopped ]]; then
+printf "$header" "Main:" $RED$main$RESTORE "Web Directory:" $site
+else
+printf "$header" "Main:" $GREEN$main$RESTORE "Web Directory:" $site
+fi
+if [[ $blocks = stopped ]]; then
+printf "$header" "Blocks:" $RED$blocks$RESTORE "Stratum Directory:" $stratum
+else
+printf "$header" "Blocks:" $GREEN$blocks$RESTORE "Stratum Directory:" $stratum
+fi
+if [[ $loop2 = stopped ]]; then
+printf "$header" "Loop2:" $RED$loop2$RESTORE "Hint: $hint1"
+else
+printf "$header" "Loop2:" $GREEN$loop2$RESTORE "Hint: $hint1"
+fi
+if [[ $debug = stopped ]]; then
+printf "$header" "Debug:" $RED$debug$RESTORE "Hint: $hint2"
+else
+printf "$header" "Debug:" $GREEN$debug$RESTORE "Hint: $hint2"
+fi
+echo
+echo "To start|stop|restart a screen use the following command..."
+echo "screens start|stop|restart main|loop2|blocks|debug"
+echo
+echo "To reload this MOTD just type motd..."
+echo
+/usr/lib/update-notifier/update-motd-reboot-required
+/usr/lib/update-notifier/apt-check --human-readable
+echo
