@@ -42,8 +42,8 @@
     ' | sudo -E tee /etc/sudoers.d/${whoami} >/dev/null 2>&1
     
     # install some basic things needed to even start
-    sudo apt update -y
-    sudo apt install dialog curl -y
+    sudo apt update -y >/dev/null 2>&1
+    sudo apt install dialog curl software-properties-common -y >/dev/null 2>&1
     
     #Copy needed files
     sudo cp -r conf/functions.sh /etc/
@@ -205,7 +205,7 @@
     if [ ! -f /etc/apt/sources.list.d/ondrej-php-bionic.list ]; then
 		echo " ===  Adding ppa:ondrej/php repo"
         sudo add-apt-repository ppa:ondrej/php -y
-        
+
     fi
 		hide_output sudo apt -y update
 
