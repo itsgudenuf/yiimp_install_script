@@ -1,16 +1,17 @@
 # Yiimp_install_scrypt v0.2 (update September, 2022)
 
-Original SCRIPT : https://github.com/cryptopool-builders/multipool_original_yiimp_installer
+Original SCRIPT : https://github.com/cryptopool-builders/multipool_original_yiimp_installer  
 Improved SCRIPT : https://github.com/vaudois/yiimp_install_scrypt
 
 
 ***********************************
 
 ## Install script for yiimp on Ubuntu Server 18.04  (No Longer Supporting 16.04)  
+* hope to update to 20.04 LTS when I have time
 
 USE THIS SCRIPT ON FRESH INSTALL UBUNTU Server 18.04 Only!
 
-Connect on your VPS =>
+Connect on your VPS/VM/Server =>
 - adduser pool
 - adduser pool sudo
 - su - pool
