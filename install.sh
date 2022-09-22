@@ -38,7 +38,9 @@
     '""''"${whoami}"''""' ALL=(ALL) NOPASSWD:ALL
     ' | sudo -E tee /etc/sudoers.d/${whoami} >/dev/null 2>&1
     
-
+    hide_output sudo apt update -y
+    hide_output sudo apt install dialog -y
+    
     #Copy needed files
     sudo cp -r conf/functions.sh /etc/
     sudo cp -r conf/screen-scrypt.sh /etc/
@@ -48,8 +50,7 @@
     sudo chmod +x /usr/bin/editconf.py
     sudo chmod +x /etc/screen-scrypt.sh
 
-    hide_output sudo apt -y update
-    hide_output sudo apt -y install dialog
+    
 
 
 
