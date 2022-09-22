@@ -6,7 +6,7 @@
 # Modified by itsgudenuf
 #####################################################
 
-VERSION=0.1
+VERSION=0.2
 ESC_SEQ="\x1b["
 COL_RESET=$ESC_SEQ"39;49;00m"
 RED=$ESC_SEQ"31;01m"
@@ -169,7 +169,7 @@ function term_art {
 	clear
 	echo
 	echo -e "$CYAN  --------------------------------------------------------------------- 	  				$COL_RESET"
-	echo -e "$YELLOW  Welcome to the Yiimp Installer Script , Fork By Vaujdois!								$COL_RESET"
+	echo -e "$YELLOW  Welcome to the Yiimp Installer Script , Fork By Itsgudenyuf!							$COL_RESET"
 	echo -e "$GREEN  Version: v${VERSION}  																	$COL_RESET"
 	echo -e "$CYAN  --------------------------------------------------------------------- 	  				$COL_RESET"
 	echo -e "$YELLOW  This script will install all the dependencies and will install Yiimp.					$COL_RESET"

@@ -38,8 +38,9 @@
     '""''"${whoami}"''""' ALL=(ALL) NOPASSWD:ALL
     ' | sudo -E tee /etc/sudoers.d/${whoami} >/dev/null 2>&1
     
-    hide_output sudo apt update -y
-    hide_output sudo apt install dialog -y
+    # install some basic things needed to even start
+    sudo apt update -y
+    sudo apt install dialog curl -y
     
     #Copy needed files
     sudo cp -r conf/functions.sh /etc/
