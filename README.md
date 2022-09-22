@@ -10,7 +10,12 @@ Improved SCRIPT : https://github.com/vaudois/yiimp_install_scrypt
 * hope to update to 20.04 LTS when I have time
 
 USE THIS SCRIPT ON FRESH INSTALL UBUNTU Server 18.04 Only!
-
+  
+Before you start I recommend you
+- apt update && apt upgrade -y  
+- Take a snapshot just incase something goes wrong
+  
+  
 Connect on your VPS/VM/Server =>
 - adduser pool
 - usermod -G sudo pool
@@ -18,7 +23,7 @@ Connect on your VPS/VM/Server =>
 - sudo apt -y install git
 - git clone https://github.com/itsgudenuf/yiimp_install_script.git
 - cd yiimp_install_script/
-- bash install.sh (DO NOT RUN THE SCRIPT AS ROOT or SUDO)
+- bash install.sh | tee > ./install.log 2>&1 (DO NOT RUN THE SCRIPT AS ROOT or SUDO)
 - At the end, you MUST REBOOT to finalize installation...
 
 Finish !

@@ -204,7 +204,7 @@
     source conf/pool.conf
     if [ ! -f /etc/apt/sources.list.d/ondrej-php-bionic.list ]; then
 		echo " ===  Adding ppa:ondrej/php repo"
-        sudo add-apt-repository ppa:ondrej/php -y
+        hide_output sudo add-apt-repository ppa:ondrej/php -y
 
     fi
 		hide_output sudo apt -y update
@@ -218,10 +218,10 @@
 
 
 	hide_output sudo systemctl start php7.3-fpm
-    sudo systemctl status php7.3-fpm | sed -n "1,3p"
+    hide_output sudo systemctl status php7.3-fpm | sed -n "1,3p"
 
     # Set default php to 7.3
-    update-alternatives --set php /usr/bin/php7.3
+    sudo update-alternatives --set php /usr/bin/php7.3
 
     echo
     echo -e "$GREEN Done...$COL_RESET"
@@ -1407,7 +1407,7 @@ echo '
     apt_install lsb-release figlet update-motd \
         landscape-common update-notifier-common
 
-    cd $YIIMP_INSTALLER_DIR/yiimp/ubuntu/etc/update-motd.d
+    cd $YIIMP_INSTALLER_DIR/ubuntu/etc/update-motd.d
     sudo rm -r /etc/update-motd.d/
     sudo mkdir /etc/update-motd.d/
     sudo touch /etc/update-motd.d/00-header ; sudo touch /etc/update-motd.d/10-sysinfo ; sudo touch /etc/update-motd.d/90-footer
@@ -1423,7 +1423,7 @@ echo '
 
 
     # copy additional files
-    cd $YIIMP_INSTALLER_DIR/yiimp/ubuntu
+    cd $YIIMP_INSTALLER_DIR/ubuntu
     sudo cp -r screens /usr/bin/
     sudo chmod +x /usr/bin/screens
 
