@@ -41,6 +41,7 @@
     '""''"${whoami}"''""' ALL=(ALL) NOPASSWD:ALL
     ' | sudo -E tee /etc/sudoers.d/${whoami} >/dev/null 2>&1
     
+    echo "Loading.... Please standby"
     # install some basic things needed to even start
     sudo apt update -y >/dev/null 2>&1
     sudo apt install dialog curl software-properties-common -y >/dev/null 2>&1
@@ -353,7 +354,7 @@
     echo
     echo -e "$CYAN => Installing Yiimp $COL_RESET"
     echo
-    echo -e "Grabbing yiimp fron Github, building files and setting file structure."
+    echo -e "Grabbing yiimp front Github, building files and setting file structure."
     echo
     sleep 3
     
