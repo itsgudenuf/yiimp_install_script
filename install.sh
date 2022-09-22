@@ -204,6 +204,8 @@
     source conf/pool.conf
     if [ ! -f /etc/apt/sources.list.d/ondrej-php-bionic.list ]; then
 		hide_output sudo add-apt-repository -y ppa:ondrej/php
+        echo " = => Adding ppa:ondrej/php repo"
+
     fi
 		hide_output sudo apt -y update
 
@@ -214,11 +216,13 @@
 
     sleep 5
 
-    # Set default php to 7.3
-    update-alternatives --set php /usr/bin/php7.3
 
 	hide_output sudo systemctl start php7.3-fpm
     sudo systemctl status php7.3-fpm | sed -n "1,3p"
+
+    # Set default php to 7.3
+    update-alternatives --set php /usr/bin/php7.3
+
     echo
     echo -e "$GREEN Done...$COL_RESET"
 
@@ -239,7 +243,7 @@
     # Installing Package to compile crypto currency
     echo
     echo
-    echo -e "$CYAN => Installing Package to compile crypto currency $COL_RESET"
+    echo -e "$CYAN => Installing Package to compile crypto currencies $COL_RESET"
     echo
 
     cd ${YIIMP_INSTALLER_DIR}
@@ -1473,6 +1477,7 @@ echo '
     sudo systemctl status nginx | sed -n "1,3p"
     sudo systemctl restart php7.3-fpm.service
     sudo systemctl status php7.3-fpm | sed -n "1,3p"
+
 
     echo
     echo -e "$GREEN Done...$COL_RESET"

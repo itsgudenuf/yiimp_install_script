@@ -13,7 +13,7 @@ function package_compile_crypto
 {
     # Installing Package to compile crypto currency
     output " "
-    output "Installing needed Package to compile crypto currency"
+    output "Installing needed packages to compile crypto currency"
     output " "
     sleep 3
 
