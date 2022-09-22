@@ -13,7 +13,7 @@ USE THIS SCRIPT ON FRESH INSTALL UBUNTU Server 18.04 Only!
 
 Connect on your VPS/VM/Server =>
 - adduser pool
-- usermond -G sudo pool
+- usermod -G sudo pool
 - su - pool
 - sudo apt -y install git
 - git clone https://github.com/itsgudenuf/yiimp_install_script.git
