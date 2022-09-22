@@ -30,6 +30,9 @@
     exit 1;
     }
 
+
+    YIIMP_INSTALLER_DIR=`pwd`
+
     #Add user group sudo + no password
     whoami=`whoami`
     sudo usermod -aG sudo ${whoami}
@@ -238,12 +241,16 @@
     echo
     echo -e "$CYAN => Installing Package to compile crypto currency $COL_RESET"
     echo
+
+    cd ${YIIMP_INSTALLER_DIR}
 	package_compile_crypto       
 
 	sleep 3
+    cd ${YIIMP_INSTALLER_DIR}
 	package_compile_coin
 	
 	sleep 3
+    cd ${YIIMP_INSTALLER_DIR}
 	package_daemonbuilder
 
 	echo '
@@ -1396,7 +1403,7 @@ echo '
     apt_install lsb-release figlet update-motd \
         landscape-common update-notifier-common
 
-    cd $HOME/yiimp/ubuntu/etc/update-motd.d
+    cd $YIIMP_INSTALLER_DIR/yiimp/ubuntu/etc/update-motd.d
     sudo rm -r /etc/update-motd.d/
     sudo mkdir /etc/update-motd.d/
     sudo touch /etc/update-motd.d/00-header ; sudo touch /etc/update-motd.d/10-sysinfo ; sudo touch /etc/update-motd.d/90-footer
@@ -1412,7 +1419,7 @@ echo '
 
 
     # copy additional files
-    cd $HOME/yiimp/ubuntu
+    cd $YIIMP_INSTALLER_DIR/yiimp/ubuntu
     sudo cp -r screens /usr/bin/
     sudo chmod +x /usr/bin/screens
 
