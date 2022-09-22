@@ -203,7 +203,7 @@
     
     source conf/pool.conf
     if [ ! -f /etc/apt/sources.list.d/ondrej-php-bionic.list ]; then
-		hide_output sudo add-apt-repository -y ppa:ondrej/php
+		sudo add-apt-repository ppa:ondrej/php -y
         echo " = => Adding ppa:ondrej/php repo"
 
     fi
