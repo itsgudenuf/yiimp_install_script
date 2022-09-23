@@ -231,7 +231,7 @@
 	hide_output sudo apt -y update
 
     # 22.04 & 20.04 are missing php-gettext
-    
+    # need to solve this before we can add support for those distros
     PACKAGES='\
         php7.3 \
         php7.3-cgi \
@@ -264,8 +264,16 @@
         libpsl-dev \
         libnghttp2-dev \
         certbot \
-        python3-certbot-dns-cloudflare\
+        
     '
+
+    # Ubuntu 16 doesn't have the cloudflare plugin for certbot
+    if [[ ("$DISTRO" != "16") ]]; then
+        PACKAGES='$PACKAGES \
+            python3-certbot-dns-cloudflare \
+        '
+    fi
+
 
     apt_install $PACKAGES
 
@@ -602,6 +610,7 @@
                 deny all;
         }
             location ~ /phpmyadmin/(.+\.php)$ {
+                client_max_body_size 2M;
                 fastcgi_pass unix:/run/php/php7.3-fpm.sock;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
                 include fastcgi_params;
@@ -727,6 +736,7 @@
                     deny all;
             }
                 location ~ /phpmyadmin/(.+\.php)$ {
+                    client_max_body_size 2M;
                     fastcgi_pass unix:/run/php/php7.3-fpm.sock;
                     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
                     include fastcgi_params;
@@ -813,6 +823,7 @@
                 deny all;
         }
             location ~ /phpmyadmin/(.+\.php)$ {
+                client_max_body_size 2M;
                 fastcgi_pass unix:/run/php/php7.3-fpm.sock;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
                 include fastcgi_params;
@@ -938,6 +949,7 @@
                     deny all;
             }
                 location ~ /phpmyadmin/(.+\.php)$ {
+                    client_max_body_size 2M;
                     fastcgi_pass unix:/run/php/php7.3-fpm.sock;
                     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
                     include fastcgi_params;
