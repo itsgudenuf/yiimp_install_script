@@ -113,13 +113,15 @@ else
 fi
 
 # New coin stratum start file
-echo '#####################################################
-# Source code from https://codereview.stackexchange.com/questions/55077/small-bash-script-to-sta$
+echo '#!/usr/bin/env bash
+
+#####################################################
+# Source code from https://codereview.stackexchange.com/questions/55077/
 # Updated by Vaudois for Daemon Coin use...
+# Updated by Itsgufenuf 
 #####################################################
 
 STRATUM_DIR=/var/stratum
-#!/usr/bin/env bash
 
 '""''"${coinsymbollower}"''""'="screen -dmS '""''"${coinsymbollower}"''""' bash $STRATUM_DIR/run.sh '""''"${coinsymbollower}"''""'.'""''"${coinalgo}"''""'"
 '""''"${coinsymbollower}"''""'stop="'screen -X -S ${coinsymbollower} quit'"
@@ -142,7 +144,7 @@ case "$1" in
     *)
         shift
         servicenames=${@-servicenames}
-        echo "usage: $0 [start|stop|restart] algo"
+        echo "usage: $0 [start|stop|restart] ${coinsymbollower}"
         exit 1
 esac
 
@@ -155,6 +157,10 @@ for name; do
     *) startstop_service $cmd $name ;;
     esac
 done ' | sudo -E tee /var/stratum/config/stratum.${coinsymbollower} >/dev/null 2>&1
+
+
+
+
 sudo chmod +x /var/stratum/config/stratum.${coinsymbollower}
 
 sudo cp -r stratum.${coinsymbollower} /usr/bin
