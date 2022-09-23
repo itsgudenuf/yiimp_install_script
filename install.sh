@@ -177,8 +177,32 @@
     echo
     
     echo -e "...Installing MariaDB Repository...$COL_RESET"
-    hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-    sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu bionic main' >/dev/null 2>&1
+    if [[ ("$DISTRO" == "16") ]]; then
+        sudo apt-get install software-properties-common dirmngr apt-transport-https
+        sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
+        sudo add-apt-repository 'deb https://atl.mirrors.knownhost.com/mariadb/repo/10.4/ubuntu xenial main'
+
+    elif [[ ("$DISTRO" == "18") ]]; then
+        sudo apt-get install apt-transport-https curl
+        sudo curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc 'https://mariadb.org/mariadb_release_signing_key.asc'
+        sudo sh -c "echo 'deb https://atl.mirrors.knownhost.com/mariadb/repo/10.6/ubuntu bionic main' >> /etc/apt/sources.list.d/mariadb.list"
+
+    elif [[ ("$DISTRO" == "20") ]]; then
+        sudo apt-get install apt-transport-https curl
+        sudo curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc 'https://mariadb.org/mariadb_release_signing_key.asc'
+        sudo sh -c "echo 'deb https://atl.mirrors.knownhost.com/mariadb/repo/10.6/ubuntu focal main' >> /etc/apt/sources.list.d/mariadb.list"
+
+    elif [[ ("$DISTRO" == "22") ]]; then
+        sudo apt-get install apt-transport-https curl
+        sudo curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc 'https://mariadb.org/mariadb_release_signing_key.asc'
+        sudo sh -c "echo 'deb https://atl.mirrors.knownhost.com/mariadb/repo/10.6/ubuntu jammy main' >> /etc/apt/sources.list.d/mariadb.list"
+
+
+    else
+        echo -e "$RED Ooooops!!! We have an unknown DISTRO. How did this happen???$COL_RESET"
+        echo -e "$RED ... hope you made a snapshot before starting... this install is ABORTED!!!!$COL_RESET"
+        exit
+    fi
     hide_output sudo apt update
     hide_output sudo apt -y upgrade
    
@@ -203,17 +227,47 @@
     sleep 3
     
     source conf/pool.conf
-    if [ ! -f /etc/apt/sources.list.d/ondrej-php-bionic.list ]; then
-		echo " ===  Adding ppa:ondrej/php repo"
-        hide_output sudo add-apt-repository ppa:ondrej/php -y
+    hide_output sudo add-apt-repository ppa:ondrej/php -y
+	hide_output sudo apt -y update
 
-    fi
-		hide_output sudo apt -y update
+    # 22.04 & 20.04 are missing php-gettext
+    
+    PACKAGES='\
+        php7.3 \
+        php7.3-cgi \
+        php7.3-cli \
+        php7.3-common \
+        php7.3-curl \
+        php7.3-fpm \
+        php7.3-gd \
+        php7.3-imap \
+        php7.3-intl \
+        php7.3-mbstring \
+        php7.3-memcache \
+        php7.3-mysql \
+        php7.3-opcache \
+        php7.3-pspell \
+        php7.3-recode \
+        php7.3-sqlite3 \
+        php7.3-tidy \
+        php7.3-xmlrpc \
+        php7.3-xsl \
+        php7.3-zip \
+        php-pear \
+        imagemagick \
+        php-imagick \
+        libruby \
+        mcrypt \
+        memcached \
+        php-memcache \
+        php-gettext \
+        libpsl-dev \
+        libnghttp2-dev \
+        certbot \
+        python3-certbot-dns-cloudflare\
+    '
 
-    apt_install php7.3-fpm php7.3-opcache php7.3 php7.3-common php7.3-gd php7.3-mysql php7.3-imap php7.3-cli \
-    php7.3-cgi php-pear imagemagick libruby php7.3-curl php7.3-intl php7.3-pspell mcrypt\
-    php7.3-recode php7.3-sqlite3 php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php-memcache php-imagick php-gettext php7.3-zip php7.3-mbstring \
-    libpsl-dev libnghttp2-dev php7.3-memcache certbot python3-certbot-dns-cloudflare
+    apt_install $PACKAGES
 
     sleep 5
 

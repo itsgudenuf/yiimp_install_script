@@ -33,7 +33,7 @@ function spinner {
 
 
 function hide_output {
-		OUTPUT=$(tempfile)
+		OUTPUT=$(mktemp)
 		$@ &> $OUTPUT & spinner
 		E=$?
 		if [ $E != 0 ]; then
