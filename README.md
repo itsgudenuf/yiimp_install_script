@@ -11,6 +11,8 @@ Improved SCRIPT : https://github.com/vaudois/yiimp_install_scrypt
 
 USE THIS SCRIPT ON FRESH INSTALL UBUNTU Server 18.04 Only!
   
+_The install will take about 20 minutes depending on the speed of the computer you might want to install screen and run this inside a screen session if remote_  
+
 Before you start I recommend you
 - apt update && apt upgrade -y  
 - Take a snapshot just incase something goes wrong
