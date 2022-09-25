@@ -1532,6 +1532,10 @@ echo '
     sudo sed -i 's/service $webserver start/sudo service $webserver start/g' /var/web/yaamp/modules/thread/CronjobController.php
     sudo sed -i 's/service nginx stop/sudo service nginx stop/g' /var/web/yaamp/modules/thread/CronjobController.php
 
+    # Get rid of the release upgrade notice
+    hide_output sudo apt purge -y ubuntu-release-upgrader-core
+    hide_output sudo rm rf /var/lib/ubuntu-release-upgrader
+
     #Misc
     sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-folder
     sudo rm -rf /var/log/nginx/*
