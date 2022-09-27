@@ -1,0 +1,11 @@
+--- /usr/share/phpmyadmin/libraries/sql.lib.php.orig	2022-09-27 00:41:56.116117667 +0000
++++ /usr/share/phpmyadmin/libraries/sql.lib.php	2022-09-27 00:43:27.281394201 +0000
+@@ -610,7 +610,7 @@
+             || $analyzed_sql_results['is_analyse'])
+         && $analyzed_sql_results['select_from']
+         && ((empty($analyzed_sql_results['select_expr']))
+-            || (count($analyzed_sql_results['select_expr'] == 1)
++            || ((count($analyzed_sql_results['select_expr']) == 1)
+                 && ($analyzed_sql_results['select_expr'][0] == '*')))
+         && count($analyzed_sql_results['select_tables']) == 1;
+ }
