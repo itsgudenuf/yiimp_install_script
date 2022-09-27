@@ -264,7 +264,7 @@
         libpsl-dev \
         libnghttp2-dev \
         certbot \
-        
+        patch \
     '
 
     # Ubuntu 16 doesn't have the cloudflare plugin for certbot
