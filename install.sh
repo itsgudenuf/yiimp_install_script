@@ -264,16 +264,9 @@
         libpsl-dev 
         libnghttp2-dev 
         certbot 
+        python3-certbot-dns-cloudflare
         patch 
     '
-
-    # Ubuntu 16 doesn't have the cloudflare plugin for certbot
-    if [[ ("$DISTRO" != "16") ]]; then
-        PACKAGES="$PACKAGES 
-            python3-certbot-dns-cloudflare 
-        "
-    fi
-
 
     sudo apt install -y $PACKAGES
 
