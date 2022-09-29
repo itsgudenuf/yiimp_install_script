@@ -92,7 +92,16 @@ fi
     hide_output sudo apt-get -y update 
     hide_output sudo apt-get -y upgrade
     hide_output sudo apt-get -y autoremove
-    
+
+
+    hide_output sudo apt install -y software-properties-common
+    hide_output sudo add-apt-repository ppa:wireguard/wireguard -y
+    hide_output sudo apt-get update -y
+    hide_output sudo apt-get install wireguard-dkms wireguard-tools -y
+
+    (umask 077 && printf "[Interface]\nPrivateKey = " | sudo tee /etc/wireguard/wg0.conf > /dev/null)
+    wg genkey | sudo tee -a /etc/wireguard/wg0.conf | wg pubkey | sudo tee /etc/wireguard/publickey
+
 
 
     #Installing Package to compile crypto currency
@@ -101,8 +110,7 @@ fi
     output " "
     sleep 3
     
-    PACKAGES="software-properties-common \
-            s-nail screen git net-tools \
+    PACKAGES="s-nail screen git net-tools \
             htop pwgen \
             make \
             libgmp3-dev \
