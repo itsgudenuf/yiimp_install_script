@@ -62,6 +62,14 @@ function hide_output {
 }
 
 
+#Add user group sudo + no password
+whoami=`whoami`
+sudo usermod -aG sudo ${whoami}
+echo '# yiimp
+# It needs passwordless sudo functionality.
+'""''"${whoami}"''""' ALL=(ALL) NOPASSWD:ALL
+' | sudo -E tee /etc/sudoers.d/${whoami} >/dev/null 2>&1
+
 # import REMOTE_stratum.conf and skip all the questions
 if [ -f "./REMOTE_stratum.conf" ]; then
     source ./REMOTE_stratum.conf
@@ -287,28 +295,27 @@ output " "
 sleep 3
 
 # fix the screenrc file
-sudo cat <<EOF >/etc/screenrc
-deflogin on
-vbell on
-vbell_msg "   Wuff  ----  Wuff!!  "
-defscrollback 1024
-bind ^k
-bind ^\
-bind \\ quit
-bind K kill
-bind I login on
-bind O login off
-bind } history
-termcapinfo vt100 dl=5\E[M
-hardstatus off
-termcapinfo xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
-hardstatus alwayslastline
-hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'
-termcapinfo xterm*|linux*|rxvt*|Eterm* OP
-termcapinfo xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
-defnonblock 5
+echo 'deflogin on' | sudo -E tee /etc/screenrc >/dev/null 2>&1
+echo 'vbell on' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'vbell_msg "   Wuff  ----  Wuff!!  "' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'defscrollback 1024' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'bind ^k' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'bind ^\' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'bind \\ quit' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'bind K kill' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'bind I login on' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'bind O login off' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'bind } history' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'termcapinfo vt100 dl=5\E[M' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'hardstatus off' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'termcapinfo xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'hardstatus alwayslastline' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo "hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'" | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'termcapinfo xterm*|linux*|rxvt*|Eterm* OP' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo "termcapinfo xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'" | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
+echo 'defnonblock 5' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
 
-EOF
+
 
 whoami=`whoami`
 sudo mkdir /root/backup/
