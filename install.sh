@@ -1542,9 +1542,47 @@ echo '
     hide_output sudo apt purge -y ubuntu-release-upgrader-core
     hide_output sudo rm rf /var/lib/ubuntu-release-upgrader
 
-    #Misc
+
+    # Saving data for possible remote stratum setups (east coast / west coast ????)
+    echo "export yiimpver=$yiimpver" >> $HOME/yiimp/REMOTE_stratum.conf
+    echo "export blckntifypass=$blckntifypass" >> $HOME/yiimp/REMOTE_stratum.conf
+    echo "export server_name=\$(hostname -f)" >> $HOME/yiimp/REMOTE_stratum.conf
+    echo "export MYSQLIP=$server_name" >> $HOME/yiimp/REMOTE_stratum.conf
+    echo "export MYSQLDB=yiimpfrontend" >> $HOME/yiimp/REMOTE_stratum.conf
+    echo "export MYSQLUSER=stratum" >> $HOME/yiimp/REMOTE_stratum.conf
+    echo "export MYSQLPASS=$password2" >> $HOME/yiimp/REMOTE_stratum.conf
+    echo "export BTC=$BTC" >> $HOME/yiimp/REMOTE_stratum.conf
+    sudo chmod 400 $HOME/yiimp/REMOTE_stratum.conf
+
+
+    #Misc cleanup
+
     sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-folder
     sudo rm -rf /var/log/nginx/*
+
+# fix the screenrc file
+sudo cat <<EOF >/etc/screenrc
+deflogin on
+vbell on
+vbell_msg "   Wuff  ----  Wuff!!  "
+defscrollback 1024
+bind ^k
+bind ^\
+bind \\ quit
+bind K kill
+bind I login on
+bind O login off
+bind } history
+termcapinfo vt100 dl=5\E[M
+hardstatus off
+termcapinfo xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'
+termcapinfo xterm*|linux*|rxvt*|Eterm* OP
+termcapinfo xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+defnonblock 5
+
+EOF
 
     #Restart service
     sudo systemctl restart cron.service
