@@ -232,50 +232,50 @@
 
     # 22.04 & 20.04 are missing php-gettext
     # need to solve this before we can add support for those distros
-    PACKAGES='\
-        php7.3 \
-        php7.3-cgi \
-        php7.3-cli \
-        php7.3-common \
-        php7.3-curl \
-        php7.3-fpm \
-        php7.3-gd \
-        php7.3-imap \
-        php7.3-intl \
-        php7.3-mbstring \
-        php7.3-memcache \
-        php7.3-mysql \
-        php7.3-opcache \
-        php7.3-pspell \
-        php7.3-recode \
-        php7.3-sqlite3 \
-        php7.3-tidy \
-        php7.3-xmlrpc \
-        php7.3-xsl \
-        php7.3-zip \
-        php-pear \
-        imagemagick \
-        php-imagick \
-        libruby \
-        mcrypt \
-        memcached \
-        php-memcache \
-        php-gettext \
-        libpsl-dev \
-        libnghttp2-dev \
-        certbot \
-        patch \
+    PACKAGES='
+        php7.3 
+        php7.3-cgi 
+        php7.3-cli 
+        php7.3-common 
+        php7.3-curl 
+        php7.3-fpm 
+        php7.3-gd 
+        php7.3-imap 
+        php7.3-intl 
+        php7.3-mbstring 
+        php7.3-memcache 
+        php7.3-mysql 
+        php7.3-opcache 
+        php7.3-pspell 
+        php7.3-recode 
+        php7.3-sqlite3 
+        php7.3-tidy 
+        php7.3-xmlrpc 
+        php7.3-xsl 
+        php7.3-zip 
+        php-pear 
+        imagemagick 
+        php-imagick 
+        libruby 
+        mcrypt 
+        memcached 
+        php-memcache 
+        php-gettext 
+        libpsl-dev 
+        libnghttp2-dev 
+        certbot 
+        patch 
     '
 
     # Ubuntu 16 doesn't have the cloudflare plugin for certbot
     if [[ ("$DISTRO" != "16") ]]; then
-        PACKAGES='$PACKAGES \
-            python3-certbot-dns-cloudflare \
-        '
+        PACKAGES="$PACKAGES 
+            python3-certbot-dns-cloudflare 
+        "
     fi
 
 
-    apt_install $PACKAGES
+    sudo apt install -y $PACKAGES
 
     sleep 5
 

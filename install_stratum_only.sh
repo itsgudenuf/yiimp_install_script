@@ -110,51 +110,51 @@ fi
     output " "
     sleep 3
     
-    PACKAGES="s-nail screen git net-tools \
-            htop pwgen \
-            make \
-            libgmp3-dev \
-            build-essential \
-            libmysqlclient-dev \
-            libtool \
-            libcurl4-gnutls-dev \
-            automake \
-            libkrb5-dev \
-            gnutls-dev \
-            libidn11-dev \
-            libldap2-dev \
-            librtmp-dev \
-            libnghttp2-dev \
-            libpsl-dev \
-            autotools-dev \
-            pkg-config \
-            libssl-dev \
-            libevent-dev \
-            bsdmainutils \
-            libboost-all-dev \
-            zlib1g-dev \
-            libzmq5 \
-            libzmq3-dev \
-            mariadb-client \
+    PACKAGES="s-nail screen git net-tools 
+            htop pwgen 
+            make 
+            libgmp3-dev 
+            build-essential 
+            libmysqlclient-dev 
+            libtool 
+            libcurl4-gnutls-dev 
+            automake 
+            libkrb5-dev 
+            gnutls-dev 
+            libidn11-dev 
+            libldap2-dev 
+            librtmp-dev 
+            libnghttp2-dev 
+            libpsl-dev 
+            autotools-dev 
+            pkg-config 
+            libssl-dev 
+            libevent-dev 
+            bsdmainutils 
+            libboost-all-dev 
+            zlib1g-dev 
+            libzmq5 
+            libzmq3-dev 
+            mariadb-client 
         "
             
         # Not yet needed
-            # cmake \
-            # libz-dev \
-            # libseccomp-dev \
-            # libcap-dev \
-            # libminiupnpc-dev \
-            # libminiupnpc10 \
-            # libcanberra-gtk-module \
-            # libqrencode-dev \
-            # libqt5gui5 \
-            # libqt5core5a \
-            # libqt5webkit5-dev \
-            # libqt5dbus5 \
-            # qttools5-dev \
-            # qttools5-dev-tools \
-            # libprotobuf-dev \
-            # protobuf-compiler \
+            # cmake 
+            # libz-dev 
+            # libseccomp-dev 
+            # libcap-dev 
+            # libminiupnpc-dev 
+            # libminiupnpc10 
+            # libcanberra-gtk-module 
+            # libqrencode-dev 
+            # libqt5gui5 
+            # libqt5core5a 
+            # libqt5webkit5-dev 
+            # libqt5dbus5 
+            # qttools5-dev 
+            # qttools5-dev-tools 
+            # libprotobuf-dev 
+            # protobuf-compiler 
     
 
     hide_output sudo apt install -y $PACKAGES
