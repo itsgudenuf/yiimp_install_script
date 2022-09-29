@@ -1,4 +1,4 @@
-# Yiimp_install_script v0.2 (update September, 2022)
+# Yiimp_install_script v0.2.1 (update September 28, 2022)
 
 Original SCRIPT : https://github.com/cryptopool-builders/multipool_original_yiimp_installer  
 Improved SCRIPT : https://github.com/vaudois/yiimp_install_scrypt
@@ -66,6 +66,9 @@ Adding the Coins and connecting to the nodes for those blockchains caused me the
 There will be several wallets already in yiimp. These have nothing to do with the installation script and are from the database import from the yiimp github. 
 You should change any Wallet address you don't recognize.... unless you want to send me some coin :)
 
+
+**If you want to run multiple stratums on different servers, look at the install_stratum_only script**
+I recommend you get the stratum for each coin running on the local server FIRST.
 
 If this helped you or you feel like giving please donate to : 
 - BTC Donation : bc1qp0m22e70d7qv9kdxd8kyw7xy47mk8gq3r4xy7v

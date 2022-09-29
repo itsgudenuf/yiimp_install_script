@@ -1388,31 +1388,6 @@ echo '
 	// Google Analytics = '"'"''"'"' == disabled
 	//define('"'"'YAAMP_GOOGLE_ANALYTICS'"'"', '"'"''"'"');
 
-	// Others server Stratums of inn Worl enter name Country ex: Europe
-	//define('"'"'YAAMP_THIS_SERVER_STRATUM', 'europe'"'"');
-	//define('"'"'YAAMP_SERVERS_STRATUMS'"'"', array(
-	//'"'"'europe'"'"',
-	//'"'"'asia'"'"',
-	//));
-
-	// use chat from CHATBRO.COM
-	//define('"'"'YAAMP_CHATBRO'"'"', true);
-	//define('"'"'YAAMP_CHATBRO_CONFIG_WEB'"'"', false);
-	//define('"'"'YAAMP_CHATBRO_ID'"'"', '"'"'18UYt'"'"');
-	// YAAMP_CHATBRO_CONFIG_WEB is false you can put the name of indefinite chats eg = chat1, new = chat2, new = chat3...
-	//define('"'"'YAAMP_CHATBRO_CUSTOM_NAME'"'"', '"'"'090822'"'"');
-
-	// Bottom links social
-	//define('"'"'YAAMP_LINK_DISCORD'"'"', '"'"'DD4rhgwySG'"'"');
-	//define('"'"'YAAMP_LINK_TWITTER'"'"', true);
-	//define('"'"'YAAMP_LINK_MAILCONTACT'"'"', YAAMP_CONTACT_EMAIL);
-
-	//# TELEGRAM CONFIG BOT AND URL
-	//define('"'"'YAAMP_LINK_TELEGRAM'"'"', '"'"'+DMgAs-7cwNEzYmFk'"'"');
-	//define('"'"'YAAMP_BOT_TOKEN_TELEGRAM'"'"', '"'"'5564362856:AAG05ljMt7-67F8u5Fmyg8QmOK0nJMcMQxM'"'"');
-	//define('"'"'YAAMP_CHAT_ID_TELEGRAM'"'"', '"'"'-661569030'"'"');
-
-	//define('"'"'YAAMP_LINK_GITHUB'"'"', false);
 
 	// FOOTER Copyright add text or html info...
 	//define('"'"'YAAMP_FOOTER_COPY'"'"', '"'"''"'"');
