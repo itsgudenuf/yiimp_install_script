@@ -97,19 +97,27 @@ fi
     
     
     # update package and upgrade Ubuntu
-    hide_output sudo apt-get -y update 
-    hide_output sudo apt-get -y upgrade
-    hide_output sudo apt-get -y autoremove
+    hide_output sudo apt -y update 
+    hide_output sudo apt -y upgrade
+    hide_output sudo apt -y autoremove
 
 
     hide_output sudo apt install -y software-properties-common
-    hide_output sudo add-apt-repository ppa:wireguard/wireguard -y
-    hide_output sudo apt-get update -y
-    hide_output sudo apt-get install wireguard-dkms wireguard-tools -y
+    # hide_output sudo add-apt-repository ppa:wireguard/wireguard -y
+    hide_output sudo apt update -y
+    hide_output sudo apt install wireguard-dkms wireguard-tools -y
 
     (umask 077 && printf "[Interface]\nPrivateKey = " | sudo tee /etc/wireguard/wg0.conf > /dev/null)
     wg genkey | sudo tee -a /etc/wireguard/wg0.conf | wg pubkey | sudo tee /etc/wireguard/publickey
 
+
+
+    # install mariadb repo so we are building off the same client as the server
+    sudo apt install apt-transport-https curl
+    sudo curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc 'https://mariadb.org/mariadb_release_signing_key.asc'
+    sudo sh -c "echo 'deb https://atl.mirrors.knownhost.com/mariadb/repo/10.4/ubuntu bionic main' >> /etc/apt/sources.list.d/mariadb.list"
+
+    sudo apt update -y
 
 
     #Installing Package to compile crypto currency
@@ -165,12 +173,12 @@ fi
             # protobuf-compiler 
     
 
-    hide_output sudo apt install -y $PACKAGES
+    sudo apt install -y $PACKAGES
 
 
 #    sudo add-apt-repository -y ppa:bitcoin/bitcoin
-#    sudo apt-get -y update
-#    sudo apt-get install -y libdb4.8-dev libdb4.8++-dev libdb5.3 libdb5.3++
+#    sudo apt -y update
+#    sudo apt install -y libdb4.8-dev libdb4.8++-dev libdb5.3 libdb5.3++
 	
     output " "
     output " "
@@ -276,6 +284,9 @@ sudo sed -i 's/host = yaampdb/host = '$MYSQLIP'/g' *.conf
 sudo sed -i 's/database = yaamp/database = '$MYSQLDB'/g' *.conf
 sudo sed -i 's/username = root/username = '$MYSQLUSER'/g' *.conf
 sudo sed -i 's/password = patofpaq/password = '$MYSQLPASS'/g' *.conf
+# Add debuglog section options
+sudo sed -i '$a[DEBUGLOG]\nclient = 0\nhash = 0\nsocket = 0\nrpc = 0\nlist = 0\nremote = 0' *.conf
+
 cd ~
 
 echo " "
@@ -316,10 +327,31 @@ echo "termcapinfo xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'" | sudo -E tee -a
 echo 'defnonblock 5' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
 
 
+# REmove the OS upgrader
+sudo apt purge ubuntu-release-upgrader-core -y 
+sudo rm -rf /var/lib/update-notifier
+sudo rm -rf /var/lib/ubuntu-release-upgrader
+
+
+# Clean up some MOTD stuff
+sudo rm -f /etc/update-motd.d/10-help-text
+sudo rm -f /etc/update-motd.d/50-motd-news
+sudo rm -f /etc/update-motd.d/88-esm-announce
+
+
+# I DO NOT Recommend Vultr servers, they seem to have severe performance issues as well as package issues
+# Good luck, if you want to try.
+if [ -d "/opt/vultr" ]; then
+    # disable the rewrite of /etc/hosts
+    sudo sed -i '/update_etc_hosts/d' /etc/cloud/cloud.cfg
+    sudo sed -i '/preserve_hostname.* /a manage_etc_hosts: false' /etc/cloud/cloud.cfg
+
+fi
+
 
 whoami=`whoami`
 sudo mkdir /root/backup/
-sudo chown -R www-data:www-data /var/stratum
+sudo chown -R $whoami. /var/stratum
 sudo chmod -R 775 /var/stratum
 sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-folder
 

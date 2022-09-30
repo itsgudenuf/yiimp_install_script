@@ -62,7 +62,7 @@ if [ -f /var/stratum/config/stratum.${coinsymbollower} ]; then
     exit 0
   fi
 if [ ! -f /var/stratum/config/$coinalgo.conf ]; then
-  echo -e "$YELLOW Sorry that algo config file doesn't exist in $RED /home/crypto-data/yiimp/site/stratum/config/ $YELLOW please double check and try again. $COL_RESET"
+  echo -e "$YELLOW Sorry that algo config file doesn't exist in $RED /var/stratum/config/ $YELLOW please double check and try again. $COL_RESET"
   exit 0
 fi
 fi
