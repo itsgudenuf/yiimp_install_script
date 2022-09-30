@@ -354,6 +354,8 @@ sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-fold
 echo " "
 ip add li | grep -A 2 mtu | grep -v link
 echo " "
+echo -n "WG Public key: "
+sudo cat /etc/wireguard/publickey
 echo " "
 
 output " "
