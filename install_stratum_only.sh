@@ -111,8 +111,8 @@ fi
 
     (umask 077 && printf "[Interface]\nPrivateKey = " | sudo tee /etc/wireguard/wg0.conf > /dev/null)
     wg genkey | sudo tee -a /etc/wireguard/wg0.conf | wg pubkey | sudo tee /etc/wireguard/publickey
-    sudo sed -i '$aAddress = '$VPNIP'/32\nListenPort = 6121\n' /etc/wireguard/wg0.conf
-    sudo sed -i '$a \n[Peer]\nPublicKey = '$VPNPUBBKEY' \nAllowedIPs = '$MYSQLIP'/24\nEndpoint='$VPNSERVER':6121\n' /etc/wireguard/wg0.conf
+    sudo sed -i '$aAddress = '$VPNIP'/32\nListenPort = 6121\n\n' /etc/wireguard/wg0.conf
+    sudo sed -i '$a [Peer]\nPublicKey = '$VPNPUBBKEY' \nAllowedIPs = '$MYSQLIP'/24\nEndpoint='$VPNSERVER':6121\n' /etc/wireguard/wg0.conf
 
     sudo systemctl start wg-quick@wg0
     sudo systemctl enable wg-quick@wg0
@@ -296,17 +296,6 @@ sudo sed -i '$a[DEBUGLOG]\nclient = 0\nhash = 0\nsocket = 0\nrpc = 0\nlist = 0\n
 
 cd ~
 
-echo " "
-echo "REMINDER: Besure to add MySQL access for $MYSQLUSER from this host's IP (through a tunnel, maybe???)."
-# echo "mysql> CREATE USER '$MYSQLUSER'@{SOME_IP}' IDENTIFIED BY '$MYSQLPASS';"
-echo "mysql> GRANT ALL PRIVILEGES ON  $MYSQLDB.* to '$MYSQLUSER'@'{SOME_IP}' IDENTIFIED BY '$MYSQLPASS';"
-echo "mysql> flush privileges;"
-echo " "
-echo "Test your work: echo 'show tables;' | mysql -h $MYSQLIP -u  $MYSQLUSER -p$MYSQLPASS $MYSQLDB"
-echo " "
-echo " "
-sleep 3
-
 output " "
 output "Final Directory permissions"
 output " "
@@ -362,12 +351,23 @@ sudo chown -R $whoami. /var/stratum
 sudo chmod -R 775 /var/stratum
 sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-folder
 
-output " "
-output " "
-output " "
+echo " "
+ip add li | grep -A 2 mtu | grep -v link
+echo " "
+echo " "
+
 output " "
 output "Whew that was fun, just some reminders. This install performed only stratum servers installation."
 output " "
-output "Please make sure to update and launch the stratum screen file(s)."
-output " "
-output " "
+echo "Check/Fix your VPN to the Database"
+echo " "
+echo "add MySQL access for $MYSQLUSER from this host's wg0 IP"
+echo "mysql> GRANT ALL PRIVILEGES ON  $MYSQLDB.* to '$MYSQLUSER'@'$VPNIP' IDENTIFIED BY '$MYSQLPASS';"
+echo "mysql> flush privileges;"
+echo " "
+echo "Test your work: echo 'show tables;' | mysql -h $MYSQLIP -u  $MYSQLUSER -p$MYSQLPASS $MYSQLDB"
+echo " "
+echo " "
+echo  "Please make sure to update and launch the stratum screen file(s)."
+
+sleep 3
