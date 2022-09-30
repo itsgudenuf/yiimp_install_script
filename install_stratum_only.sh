@@ -323,6 +323,16 @@ echo "termcapinfo xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'" | sudo -E tee -a
 echo 'defnonblock 5' | sudo -E tee -a /etc/screenrc >/dev/null 2>&1
 
 
+output " "
+output "Activating UFW"
+sudo apt install ufw -y
+
+hide_output sudo ufw default deny incoming
+hide_output sudo ufw default allow outgoing
+hide_output sudo ufw allow ssh
+hide_output sudo ufw --force enable 
+sudo systemctl status ufw | sed -n "1,3p"   
+
 # REmove the OS upgrader
 sudo apt purge ubuntu-release-upgrader-core -y 
 sudo rm -rf /var/lib/update-notifier
@@ -354,13 +364,9 @@ sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-fold
 echo " "
 ip add li | grep -A 2 mtu | grep -v link
 echo " "
-echo -n "WG Public key: "
+echo "WG Public key: "
 sudo cat /etc/wireguard/publickey
 echo " "
-
-output " "
-output "Whew that was fun, just some reminders. This install performed only stratum servers installation."
-output " "
 echo "Check/Fix your VPN to the Database"
 echo " "
 echo "add MySQL access for $MYSQLUSER from this host's wg0 IP"
