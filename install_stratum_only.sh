@@ -120,7 +120,7 @@ fi
 
 
     # install mariadb repo so we are building off the same client as the server
-    sudo apt install apt-transport-https curl
+    sudo apt install apt-transport-https curl -y
     sudo curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc 'https://mariadb.org/mariadb_release_signing_key.asc'
     sudo sh -c "echo 'deb https://atl.mirrors.knownhost.com/mariadb/repo/10.4/ubuntu bionic main' >> /etc/apt/sources.list.d/mariadb.list"
 
