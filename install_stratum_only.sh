@@ -88,6 +88,8 @@ else
     read -e -p "Enter the Pool's sql server database : " MYSQLDB
     read -e -p "Enter the Pool's sql stratum username : " MYSQLUSER
     read -e -p "Enter the Pool's sql stratum password : " MYSQLPASS
+    read -e -p "Enter Public IP of the sql server (for VPN) : " VPNSERVER
+    read -e -p "Enter private vpn IP for this server (must be in same net as $MYSQLIP/24) : " VPNIP 
 fi
     
     output " "
@@ -109,7 +111,12 @@ fi
 
     (umask 077 && printf "[Interface]\nPrivateKey = " | sudo tee /etc/wireguard/wg0.conf > /dev/null)
     wg genkey | sudo tee -a /etc/wireguard/wg0.conf | wg pubkey | sudo tee /etc/wireguard/publickey
+    sudo sed -i '$aAddress = '$VPNIP'/32\nListenPort = 6121\n' /etc/wireguard/wg0.conf
+    sudo sed -i '$a \n[Peer]\nPublicKey = '$VPNPUBBKEY' \nAllowedIPs = '$MYSQLIP'/24\nEndpoint='$VPNSERVER':6121\n' /etc/wireguard/wg0.conf
 
+    sudo systemctl start wg-quick@wg0
+    sudo systemctl enable wg-quick@wg0
+    sudo ufw allow 6121
 
 
     # install mariadb repo so we are building off the same client as the server
