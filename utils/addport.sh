@@ -25,6 +25,10 @@ function EPHYMERAL_PORT(){
     done
 }
 
+homedir=$( getent passwd "$USER" | cut -d: -f6 )
+homebin="$homedir/bin"
+
+
 coinport=$(EPHYMERAL_PORT)
 
 cd /var/stratum/config
@@ -163,11 +167,14 @@ done ' | sudo -E tee /var/stratum/config/stratum.${coinsymbollower} >/dev/null 2
 
 sudo chmod +x /var/stratum/config/stratum.${coinsymbollower}
 
-sudo cp -r stratum.${coinsymbollower} /usr/bin
+# sudo cp -r stratum.${coinsymbollower} /usr/bin
+cp -r stratum.${coinsymbollower} $homebin
+
+
 sudo ufw allow $coinport
 echo
 echo "Adding stratum.${coinsymbollower} to crontab for autostart at system boot."
-(crontab -l 2>/dev/null; echo "@reboot sleep 10 && bash stratum.${coinsymbollower} start ${coinsymbollower}") | crontab -
+(crontab -l 2>/dev/null; echo "@reboot sleep 10 && bash ${$homebin}/stratum.${coinsymbollower} start ${coinsymbollower}") | crontab -
 echo
 echo -e "$YELLOW Starting your new stratum...$COL_RESET"
 bash stratum.${coinsymbollower} start ${coinsymbollower}

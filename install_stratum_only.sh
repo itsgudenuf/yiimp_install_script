@@ -361,6 +361,12 @@ sudo chown -R $whoami. /var/stratum
 sudo chmod -R 775 /var/stratum
 sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-folder
 
+# create a private bin, store stratum start/stop scripts here!!!
+homedir=$( getent passwd "$USER" | cut -d: -f6 )
+mkdir $homedir/bin
+
+
+
 echo " "
 ip add li | grep -A 2 mtu | grep -v link
 echo " "

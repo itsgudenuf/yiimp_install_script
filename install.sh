@@ -1493,6 +1493,11 @@ echo '
     sudo chmod +x /usr/bin/screens
 
 
+    whoami=`whoami`
+    # create a private bin, store stratum start/stop scripts here!!!
+    mkdir /home/$whoami/bin
+
+
     ##### End of Dirty Harry additions ### 
 
     # Wireguard support
