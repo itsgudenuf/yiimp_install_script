@@ -168,7 +168,7 @@ done ' | sudo -E tee /var/stratum/config/stratum.${coinsymbollower} >/dev/null 2
 sudo chmod +x /var/stratum/config/stratum.${coinsymbollower}
 
 # sudo cp -r stratum.${coinsymbollower} /usr/bin
-cp -r stratum.${coinsymbollower} $homebin
+cp -r stratum.${coinsymbollower} $homebin/
 
 
 sudo ufw allow $coinport
