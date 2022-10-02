@@ -1560,6 +1560,10 @@ echo '
     hide_output sudo rm rf /var/lib/ubuntu-release-upgrader
 
 
+    # Generate a ssh key
+    ssh-keygen -q -t rsa -N '' <<< $'\ny' >/dev/null 2>&1
+    SSHKEY=`cat $HOME/.ssh/id_rsa.pub`
+
     # Saving data for possible remote stratum setups (east coast / west coast / europe / asia ????)
     VPNSERVER=`curl -q http://ifconfig.me`
     echo "export yiimpver=$yiimpver" >> $HOME/yiimp/REMOTE_stratum.conf
@@ -1577,6 +1581,7 @@ echo '
     echo "export MYSQLUSER=stratum" >> $HOME/yiimp/REMOTE_stratum.conf
     echo "export MYSQLPASS=$stratumpass" >> $HOME/yiimp/REMOTE_stratum.conf
     echo "export BTC=$BTC" >> $HOME/yiimp/REMOTE_stratum.conf
+    echo "export SSHKEY=$SSHKEY" >> $HOME/yiimp/REMOTE_stratum.conf
     echo "export VPNSERVER=$VPNSERVER" >> $HOME/yiimp/REMOTE_stratum.conf
     echo -e "\n#\#SET THE VPN IP FOR THIS REMOTE STRATUM\n#\nexport VPNIP=??????" >> $HOME/yiimp/REMOTE_stratum.conf
     sudo chmod 400 $HOME/yiimp/REMOTE_stratum.conf

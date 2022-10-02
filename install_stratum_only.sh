@@ -365,6 +365,19 @@ sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-fold
 homedir=$( getent passwd "$USER" | cut -d: -f6 )
 mkdir $homedir/bin
 
+# show what screens (stratums) are running when I log in
+echo '
+echo
+echo "==========================="
+screen -ls
+echo "==========================="
+echo
+' >> $HOME/.profile
+
+
+# Make it easier to log in from the main server.
+mkdir .ssh
+echo "$SSHKEY" >> $HOME/.ssh/authorized_keys
 
 
 echo " "
