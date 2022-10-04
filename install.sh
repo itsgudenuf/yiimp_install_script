@@ -47,13 +47,14 @@
     sudo apt install dialog curl software-properties-common -y >/dev/null 2>&1
     
     #Copy needed files
-    sudo cp -r conf/functions.sh /etc/
+    sudo cp -r conf/functions.sh /etc/functions.sh
     sudo cp -r conf/screen-scrypt.sh /etc/
     sudo cp -r conf/editconf.py /usr/bin/
 	cp -r utils/addport $HOME/bin/addport
 	chmod +x $HOME/bin/addport
     sudo chmod +x /usr/bin/editconf.py
     sudo chmod +x /etc/screen-scrypt.sh
+    sudo chmod 644 /etc/functions.sh
 
     
 
