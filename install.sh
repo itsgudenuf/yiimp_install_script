@@ -50,8 +50,8 @@
     sudo cp -r conf/functions.sh /etc/
     sudo cp -r conf/screen-scrypt.sh /etc/
     sudo cp -r conf/editconf.py /usr/bin/
-	sudo cp -r utils/addport.sh /usr/bin/addport
-	sudo chmod +x /usr/bin/addport
+	cp -r utils/addport $HOME/bin/addport
+	chmod +x $HOME/bin/addport
     sudo chmod +x /usr/bin/editconf.py
     sudo chmod +x /etc/screen-scrypt.sh
 
