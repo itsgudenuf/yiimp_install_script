@@ -1258,7 +1258,8 @@ echo '
         sudo ufw allow 6121
     fi
 
-
+    # Fix a timezone issue in console.php
+    sudo sed -i 's|Europe/Paris|UTC|g' /var/web/yaamp/console.php
 
 
 
