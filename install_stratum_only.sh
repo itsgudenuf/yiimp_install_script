@@ -296,6 +296,21 @@ sudo sed -i '$a[DEBUGLOG]\nclient = 0\nhash = 0\nsocket = 0\nrpc = 0\nlist = 0\n
 
 cd ~
 
+# Icinga packages, in case you want to monitor your nodes
+sudo apt -y install apt-transport-https wget gnupg
+sudo wget -O - https://packages.icinga.com/icinga.key | sudo apt-key add -
+
+echo "deb https://packages.icinga.com/ubuntu icinga-bionic main" | \
+    sudo -E tee -a  /etc/apt/sources.list.d/bionic-icinga.list >/dev/null 2>&1
+
+echo "deb-src https://packages.icinga.com/ubuntu icinga-bionic main" | \
+    sudo -E tee -a  /etc/apt/sources.list.d/bionic-icinga.list >/dev/null 2>&1
+
+sudo apt update -y
+sudo apt install icinga2 -y
+
+
+
 output " "
 output "Final Directory permissions"
 output " "
